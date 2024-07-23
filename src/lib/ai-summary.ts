@@ -1,6 +1,7 @@
-import { getPrompt } from "../utils/ai";
-import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
+import { getPrompt, getSystemPrompt } from "../utils/ai";
+import { generateObject } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { StoryLineResultSchema } from "schemas/result";
 
 if (!import.meta.env.GROQ_API_KEY) {
   throw new Error(
@@ -8,7 +9,7 @@ if (!import.meta.env.GROQ_API_KEY) {
   );
 }
 
-const groq = new OpenAI({
+const groq = createOpenAI({
   apiKey: import.meta.env.GROQ_API_KEY || "",
   baseURL: "https://api.groq.com/openai/v1",
 });
@@ -18,32 +19,19 @@ export const getSummary = async (tracks: any[]) => {
   return result;
 };
 
-function buildPrompt(prompt: string): any{
-  return [
-    {
-      role: "system",
-      content: "Return A JSON list of StoryLine objects IN SPANISH, DO NOT ADD TEXT, JUST A JSON LIST OF STORYLINE OBJECTS.",
-    },
-    {
-      role: "user",
-      content: prompt,
-    },
-  ];
-}
-
 async function analyzeAI(tracks: any[]) {
   let prompt = getPrompt(tracks);
 
-  const response = await groq.chat.completions.create({
-    model: "llama3-8b-8192",
-    messages: buildPrompt(prompt),
-    max_tokens: 1000,
-    response_format: { type: "json_object" },
-    temperature: 0.75,
-    frequency_penalty: 1,
-    stream: true,
+  let systemPrompt = getSystemPrompt();
+
+  const model = groq("llama3-70b-8192");
+
+  const { object: { results } } = await generateObject({
+    model,
+    system: systemPrompt,
+    prompt: prompt,
+    schema: StoryLineResultSchema,
   });
 
-  const stream = OpenAIStream(response);
-  return new StreamingTextResponse(stream).text();
+  return results;
 }

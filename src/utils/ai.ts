@@ -1,64 +1,40 @@
-import type { StoryLine } from "models/storyline";
+export const getSystemPrompt = () => {
+  return `
+    You need to generate a story line based on the user's top tracks on Spotify.
+    There will be 4 story lines generated based on the user's top tracks.
+    Each story line will be based on a specific theme.
 
-const MOODS = {
-  1: "sad",
-  2: "melancholic",
-  3: "happy",
-  4: "energetic",
-  5: "angry",
-  6: "calm",
-  7: "romantic",
-  8: "optimistic",
-  9: "nostalgic",
-  10: "hopeful",
-  11: "peaceful",
-  12: "dreamy",
-  13: "sensual",
+    Structure:
+    Title: 100 characters: The title of the story line ONLY.
+    Body: 200 characters: In this section generate a story based on the theme of the story line.
+    Do not mention the title in this section. Be creative and engaging in this section.
+    Example: If the theme is Mood, you can analyze the user's top tracks and generate a story line based on the mood of the tracks.
+    colorGradient: A string that represents the color of the story line. It can be a hex color but 
+    based of the theme and the analysis of the user's top track. 
+  
+    Write in Spanish.
+  `;
 };
-
-const exapleStoryLine: StoryLine[] = [
-  {
-    title: "string",
-    body: "string",
-    footer: "string",
-    colorGradient: "string",
-  },
-  {
-    title: "string",
-    body: "string",
-    footer: "string",
-    colorGradient: "string",
-  },
-];
 
 export const getPrompt = (tracks: any[]) => {
   return `
-    We need to analyze the spotify profile of the user to generate a story line.
-    Each Story Line is based on a specific theme.
-    These are the story lines we have generated for the user:
+    Generate me a list of story lines from these Concepts:
 
-    1 - Mood base on the user's top tracks (Title: Mood)
-    2 - Energy base on the user's top tracks (Title: Energy)
-    3 - Popularity base on the user's top tracks (Title: Popularity)
-    4 - Animal base on the user's top tracks (Title: What animal are you?)
+    Mood: The idea is to generate a story line that describes the mood of the user based on the tracks they listen to. You can say
+    that you like to listen to sad songs or happy songs, or a mix of both but be creative and engaging in this story line because it is the 
+    first one and it is the most important. Analyze the emotions.
+    Energy: Based on the user's top tracks, generate a story line that describes the energy of the tracks, ypou can say if the user is
+    listening to high energy tracks or low energy tracks, or if the user is listening to a mix of both.
+    Popularity: Each track has a value 'popularity' that goes from 0 to 100, with 0 being the least popular and 100 being the most popular at the moment. 
+    Based on the user's top tracks, generate a story line and say if the user is a trendsetter or a follower or if the user is listening to popular 
+    tracks or is a indie lover, something like that, be creative.
+    Animal: Based on the user's top tracks, generate a story line say what is my spirit animal and describes what animal the user is based on 
+    the tracks they listen to.
 
-    The response will be a list of story lines.
+    Speak in second person except for the title of the story line.
+    Do not mention any specific track in the story line just the analysis of top tracks.
+    Do not mention that you are talking about the user's top tracks, just generate a story line based on the analysis of the tracks.
 
-    - Body: Maximum 200 characters. Be concise and clear. Add some fun facts or interesting information.
-    - Footer: Maximum 50 characters. Add some fun facts or interesting information.
-    - colorGradient: A string that represents the color gradient of the story line. It can be any color but 
-    based of the theme and the analysis of the user's top tracks.
-
-    It is important to note that the story line should be based on the user's top tracks.
-    The user's top tracks and its lyrics, popularity, and other information can be used to generate the story line.
-    The story line should be engaging and interesting for the user.
-
-    Return A JSON list of StoryLine objects IN SPANISH, DO NOT ADD TEXT, JUST A JSON LIST OF STORYLINE OBJECTS.
-
-    This is the response model: ${JSON.stringify(exapleStoryLine)}.
-
-    These are the top tracks of the user: ${JSON.stringify(tracks)}.
-
-
+    These are my top tracks: ${JSON.stringify(tracks)}.
   `;
 };

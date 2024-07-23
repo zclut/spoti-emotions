@@ -12,8 +12,6 @@ export const POST: APIRoute = async ({ request }) => {
       status: 400,
     });
   }
-  console.log(accessToken);
-
   try {
 
     const response = await getTopTracks(accessToken);
@@ -44,9 +42,5 @@ export const POST: APIRoute = async ({ request }) => {
       status: 500,
     });
   }
-};
-
-export const GET: APIRoute = async ({ request }) => {
-  return new Response(JSON.stringify({ data: { accessToken: "accessToken" } }));
 };
 
