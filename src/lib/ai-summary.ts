@@ -38,7 +38,6 @@ async function analyzeAI(tracks: any[]) {
     model: "llama3-8b-8192",
     messages: buildPrompt(prompt),
     max_tokens: 1000,
-    response_format: { type: "json_object" },
     temperature: 0.75,
     frequency_penalty: 1,
     stream: true,
