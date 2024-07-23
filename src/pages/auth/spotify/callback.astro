@@ -1,11 +1,15 @@
 ---
-import { getSession } from "auth-astro/server"
+import { getSession } from "auth-astro/server";
 
-const session = await getSession(Astro.request)
+const session = await getSession(Astro.request);
 ---
 
 <main class="flex min-h-screen items-center justify-center text-center">
-	{session ? "Ingresando..." : "No se ha podido iniciar sesión"}
+  {session ? "Ingresando..." : "No se ha podido iniciar sesión"}
 </main>
 
-{session !== null && <script>window.close(); window.opener.location.reload()</script>}
+{
+  session !== null && (
+    <script>window.close(); window.opener.location.reload()</script>
+  )
+}

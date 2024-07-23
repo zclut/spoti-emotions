@@ -1,0 +1,45 @@
+---
+import type { User } from "@auth/core/types";
+
+interface Props {
+  user: User;
+}
+
+const { user } = Astro.props as Props;
+
+const label = user ? "Analyze" : "Sign in to analyze";
+---
+
+<button
+  data-token={user.id}
+  id="analysis-button"
+  class="analysis-button text-white bg-red-400"
+>
+  {label}
+</button>
+
+<script>
+  import { $ } from "@lib/dom-selector";
+
+  const $analysisButton = $("#analysis-button");
+
+  if ($analysisButton) {
+    $analysisButton.onclick = () => {
+      const { token } = $analysisButton.dataset;
+      fetch("/api/ai/analysis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessToken: token }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+  }
+</script>
