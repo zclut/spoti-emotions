@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^0.0.38",
     "@astrojs/check": "^0.8.1",
     "@astrojs/react": "^3.6.0",
     "@astrojs/tailwind": "^5.1.0",
@@ -17,10 +18,10 @@
     "@auth/core": "^0.32.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "ai": "^3.2.16",
     "astro": "^4.11.5",
-    "openai": "^4.28.0",
-    "ai": "^2.2.35",
     "auth-astro": "^4.1.2",
+    "openai": "^4.28.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.4",
