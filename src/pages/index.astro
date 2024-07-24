@@ -5,6 +5,7 @@ import Title from "../components/Title.astro";
 import AnalysisButton from "../components/AnalysisButton.astro";
 import LogInButton from "../components/LogInButton.astro";
 import Footer from "../components/Footer.astro";
+import Storyline from "../components/Storyline.astro";
 
 import { getSession } from "auth-astro/server";
 
@@ -25,6 +26,8 @@ console.log("Sesión:", session);
       ? (<LogInButton />)
       : (<AnalysisButton user={session.user} />)
     }
+
+    <Storyline storyLine={[]}/>
 
     <!-- Footer -->
     <Footer />
