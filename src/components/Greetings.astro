@@ -1,18 +1,15 @@
 ---
-interface Props {
-  text: string;
-}
-
-const { text } = Astro.props as Props;
+const greetings = ["Buenos días", "Buenas tardes", "Buenas noches"];
+const now = new Date();
+const hour = now.getHours();
+const greeting = greetings.find((g, i) => i === Math.floor(hour / 8));
 ---
 
-<h1 class="text-[4rem] leading-none text-center font-bold text-white">
+<h5 class="text-[1.5rem] leading-none text-center font-bold text-white">
+  {greeting},
   <span class="text-gradient"><slot name="before_title" /></span>
-
-  {text}
-
   <span class="text-gradient"><slot name="after_title" /></span>
-</h1>
+</h5>
 
 <style>
   :root {
