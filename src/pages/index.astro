@@ -7,7 +7,7 @@ import AnalysisButton from "../components/AnalysisButton.astro";
 import LogInButton from "../components/LogInButton.astro";
 import LogoutButton from "components/LogoutButton.astro";
 import Footer from "../components/Footer.astro";
-import Storyline from "../components/Storyline.astro";
+import Storyline from "../components/react/Storyline";
 
 import { getSession } from "auth-astro/server";
 
@@ -30,7 +30,7 @@ const session = await getSession(Astro.request);
       <LogoutButton />
     )}
 
-    <Storyline storyLine={[]}/>
+    <Storyline client:only/>
 
     <!-- Footer -->
     <Footer />
