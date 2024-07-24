@@ -2,14 +2,12 @@
 import Spotify from "../icons/Spotify.astro";
 
 ---
-
-
 <button 
-    class="flex items-center w-auto p-3 rounded-md bg-transparent border border-green-700 text-green-700 hover:bg-green-700 hover:text-white transition duration-300 ease-in-out" 
+    class="flex items-center w-auto p-3 rounded-md bg-[#121212] border border-green-700 text-green-700 hover:bg-green-700 hover:text-white transition duration-300 ease-in-out" 
     id="login"
 >
     <Spotify class:list={'w-8 h-8 mr-2'}/> 
-    <span>¡Inicia sesión para participar!</span>
+    <span>¡Inicia sesión en Spotify!</span>
 </button>
 
 <script>
@@ -18,7 +16,6 @@ import Spotify from "../icons/Spotify.astro";
   const $login = $("#login");
   if ($login) {
     $login.onclick = () => {
-      console.log("Iniciando sesión...");
       const width = 600;
       const height = 700;
       const left = window.innerWidth / 2 - width / 2;
@@ -37,7 +34,7 @@ import Spotify from "../icons/Spotify.astro";
       // Añade un temporizador que restablezca el botón después de 3 segundos
       setTimeout(() => {
         $login.removeAttribute("aria-disabled");
-        if ($span) $span.innerText = "¡Inicia sesión para participar!";
+        if ($span) $span.innerText = "¡Inicia sesión!";
       }, 3000);
     };
   }
