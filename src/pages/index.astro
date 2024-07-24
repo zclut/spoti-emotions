@@ -2,14 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 
 import Title from "../components/Title.astro";
+import Greetings from "components/Greetings.astro";
 import AnalysisButton from "../components/AnalysisButton.astro";
 import LogInButton from "../components/LogInButton.astro";
+import LogoutButton from "components/LogoutButton.astro";
 import Footer from "../components/Footer.astro";
 
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-console.log("Sesión:", session);
 ---
 
 <Layout title="SpotiEmotions">
@@ -20,11 +21,13 @@ console.log("Sesión:", session);
     </Title>
 
     <!-- Analysis button or login button -->
-    {
-      !session
-      ? (<LogInButton />)
-      : (<AnalysisButton user={session.user} />)
-    }
+    {!session ? <LogInButton /> : (
+      <Greetings>
+        <Fragment slot="before_title">{session.user.name}</Fragment>
+      </Greetings>
+      <AnalysisButton user={session.user} />
+      <LogoutButton />
+    )}
 
     <!-- Footer -->
     <Footer />
