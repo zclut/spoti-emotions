@@ -9,17 +9,10 @@ interface Props {
 let { image, username } = Astro.props as Props;
 
 if (!image) {
-  image = "/images/default-user.png";
+  image = "/images/default-avatar.webp";
 }
 ---
 
-<!-- <button
-  class="flex items-center w-auto p-3 rounded-full bg-secondary border border-red-700 text-red-700 hover:bg-red-700 hover:text-secondary transition duration-300 ease-in-out"
-  id="logout"
->
-   <Logout class:list={"w-8 h-8 mr-2"} />
-  <span>Cerrar sesión</span>
-</button> -->
 <button
   id="dropdownDefaultButton"
   data-dropdown-toggle="dropdown"
