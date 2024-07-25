@@ -1,7 +1,7 @@
-import { getPrompt, getSystemPrompt } from "../utils/ai";
+import { getPrompt, getSystemPrompt } from "@/utils/ai";
 import { generateObject } from "ai";
 import { createOpenAI } from "@ai-sdk/openai";
-import { StoryLineResultSchema } from "schemas/result";
+import { StoryLineResultSchema } from "@/schemas/result";
 
 if (!import.meta.env.GROQ_API_KEY) {
   throw new Error(

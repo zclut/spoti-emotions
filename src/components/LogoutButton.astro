@@ -1,5 +1,5 @@
 ---
-import Logout from "icons/Logout.astro";
+import Logout from "@/icons/Logout.astro";
 ---
 
 <button
@@ -12,7 +12,7 @@ import Logout from "icons/Logout.astro";
 </button>
 
 <script>
-  import { $ } from "@lib/dom-selector";
+  import { $ } from "@/lib/dom-selector";
 
   const { signOut } = await import("auth-astro/client");
 

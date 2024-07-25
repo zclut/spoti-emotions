@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { getTopTracks } from "../../../services/spotify";
-import { getLyrics } from "../../../services/lyrics";
-import { getSummary } from "../../../lib/ai-summary";
+import { getTopTracks } from "@/services/spotify";
+import { getLyrics } from "@/services/lyrics";
+import { getSummary } from "@/lib/ai-summary";
 
 export const POST: APIRoute = async ({ request }) => {
   const body = await request.json();
