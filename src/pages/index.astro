@@ -12,9 +12,20 @@ import Storyline from "@/components/react/Storyline";
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
+let image = null;
+let name = null;
+if(session){
+  image = session.user.image;
+  name = session.user.name;
+}
+
 ---
 
 <Layout title="SpotiEmotions">
+  <header class="flex align-center justify-end p-4">
+    {session ?  <LogoutButton image={image?? null} username={name} /> : ""}
+  </header>
+
   <section class="flex flex-col justify-between items-center h-screen py-10">
     <!-- Title -->
     <Title text="Spoti">
@@ -27,7 +38,7 @@ const session = await getSession(Astro.request);
         <Fragment slot="before_title">{session.user.name}</Fragment>
       </Greetings>
       <AnalysisButton user={session.user} />
-      <LogoutButton />
+     
     )}
 
     <Storyline client:only="react"/>
