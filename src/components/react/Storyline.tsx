@@ -21,7 +21,6 @@ const Storyline = () => {
           onMouseLeave={handleMouseUp}
           onTouchStart={handleMouseDown}
           onTouchEnd={handleMouseUp}
-          onClick={() => console.log('hola')}
           id="storyline"
           className="h-[40vh] w-64 bg-primary rounded-lg relative overflow-hidden tracking-[2.8px]"
         >
