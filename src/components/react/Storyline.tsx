@@ -1,7 +1,12 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
 import { storyLine } from "@/store";
-import { initStoryLine, handleGetImage } from "@/utils";
+import {
+  initStoryLine,
+  handleGetImage,
+  handleMouseDown,
+  handleMouseUp,
+} from "@/utils";
 
 const Storyline = () => {
   const $storyLine = useStore(storyLine);
@@ -14,6 +19,11 @@ const Storyline = () => {
 
   return $storyLine && $storyLine.length > 0 ? (
     <section
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      onTouchStart={handleMouseDown}
+      onTouchEnd={handleMouseUp}
       id="storyline"
       className="h-[60vh] w-64 bg-primary rounded-lg relative overflow-hidden tracking-[2.8px]"
     >
