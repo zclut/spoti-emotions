@@ -1,7 +1,7 @@
 import { useStore } from '@nanostores/react';
 import { useEffect } from 'react';
 import { storyLine } from '@/store';
-import { initStoryLine, handleGetImage } from '@/utils';
+import { initStoryLine, handleGetImage, handleMouseDown, handleMouseUp } from '@/utils';
 
 
 const Storyline = () => {
@@ -15,9 +15,15 @@ const Storyline = () => {
 
     return (
         $storyLine && $storyLine.length > 0 ? (
-            <section
-            id="storyline"
-            className="h-[40vh] w-64 bg-primary rounded-lg relative overflow-hidden tracking-[2.8px]"
+        <section
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchEnd={handleMouseUp}
+          onClick={() => console.log('hola')}
+          id="storyline"
+          className="h-[40vh] w-64 bg-primary rounded-lg relative overflow-hidden tracking-[2.8px]"
         >
 
             {/* Header */}
@@ -34,9 +40,9 @@ const Storyline = () => {
                 {/* Slide */}
                 { $storyLine.map(({ title, body }, index) => (
                     <div
-                        key={index}
-                        id={`slide-${index}`}
-                        className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
+                      key={index}
+                      id={`slide-${index}`}
+                      className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
                     >
                         <img
                             src="https://images.pexels.com/photos/2272854/pexels-photo-2272854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"

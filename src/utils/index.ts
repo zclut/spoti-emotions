@@ -7,6 +7,8 @@ let currentSlide = 0;
 let slider = null;
 let slides = null;
 let time = null
+let holdTimer = null;
+let isHold = false;
 // Buttons
 let next = null
 let prev = null; 
@@ -57,14 +59,14 @@ const createControls = () => {
     // Previous button
     prev = document.createElement('button');
     prev.type = 'button';
-    prev.classList.add('absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
-    prev.setAttribute('disabled', true);
+    prev.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
+    // prev.setAttribute('disabled', true);
     prev.addEventListener('click', prevHandler)
 
     // Next button
     next = document.createElement('button');
     next.type = 'button';
-    next.classList.add('absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
+    next.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
     next.addEventListener('click', nextHandler)
 
     controls.appendChild(prev);
@@ -74,28 +76,22 @@ const createControls = () => {
 }
 
 const prevHandler = () => {
-    currentSlide -= 1;
+    if(isHold) return;
+    currentSlide = currentSlide === 0 ? 0 : currentSlide - 1;
     indicators[currentSlide + 1].classList.remove('item-loaded');
     indicators[currentSlide + 1].classList.remove('item-loading');
     indicators[currentSlide].classList.remove('item-loaded');
-    if (currentSlide === 0) {
-        prev.setAttribute('disabled', true);
-    }
     if (currentSlide !== slides.length) {
-        next.removeAttribute('disabled');
         changeSlide(currentSlide);
     }
 }
 
 const nextHandler = () => {
-    currentSlide += 1;
+    if(isHold) return;
+    currentSlide = currentSlide === slides.length - 1 ? slides.length - 1 : currentSlide + 1;
     indicators[currentSlide - 1].classList.remove('item-loading');
     indicators[currentSlide - 1].classList.add('item-loaded');
-    if (currentSlide === slides.length - 1) {
-        next.setAttribute('disabled', true);
-    }
     if (currentSlide > 0) {
-        prev.removeAttribute('disabled');
         changeSlide(currentSlide);
     }
 }
@@ -124,6 +120,23 @@ const changeSlide = (index: number) => {
         }
     }, 4500)
 }
+
+export const handleMouseDown = () => {
+    handleMouseUp();
+    holdTimer = setTimeout(() => {
+        indicators[currentSlide].classList.remove('item-loading');
+        isHold = true;
+    }, 500); // 500ms hold time after mouse down 
+};
+
+export const handleMouseUp = async () => {
+    if(holdTimer) clearTimeout(holdTimer);
+    if(!isHold) return;
+    changeSlide(currentSlide);
+    setTimeout(() => {
+        isHold = false;
+    }, 100);
+};
 
 export const handleGetImage = async () => {
     const dataUrl = await toJpeg(slides[currentSlide], { quality: 1 });
