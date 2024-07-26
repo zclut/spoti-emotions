@@ -1,3 +1,6 @@
+import { toJpeg } from 'html-to-image';
+
+
 let storyline = null;
 // Slides
 let currentSlide = 0;
@@ -120,4 +123,13 @@ const changeSlide = (index: number) => {
             indicators[currentSlide].classList.remove('item-loading');
         }
     }, 4500)
+}
+
+export const handleGetImage = async () => {
+    const dataUrl = await toJpeg(slides[currentSlide], { quality: 1 });
+
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'storyline-screenshot.jpg';
+    a.click();
 }

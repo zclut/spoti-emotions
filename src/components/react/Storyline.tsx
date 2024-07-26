@@ -1,8 +1,7 @@
 import { useStore } from '@nanostores/react';
 import { useEffect } from 'react';
 import { storyLine } from 'store';
-import { initStoryLine } from 'utils';
-
+import { initStoryLine, handleGetImage } from 'utils';
 
 const Storyline = () => {
     const $storyLine = useStore(storyLine);
@@ -34,7 +33,8 @@ const Storyline = () => {
                 {/* Slide */}
                 { $storyLine.map(({ title, body }, index) => (
                     <div
-                        key={index} 
+                        key={index}
+                        id={`slide-${index}`}
                         className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
                     >
                         <img
@@ -57,7 +57,10 @@ const Storyline = () => {
                     className="flex-none w-6 h-6 rounded-full mr-2"
                 />
 
-                <span className="w-full text-white text-xs tracking-normal whitespace-nowrap overflow-hidden text-ellipsis">author Unknown</span>
+                <span 
+                    onClick={handleGetImage}
+                    className="w-full text-white text-xs tracking-normal whitespace-nowrap overflow-hidden text-ellipsis"
+                >author Unknown</span>
                 <a href="#" className="relative inline-block bg-transparent border border-white border-opacity-45 rounded-[25px] text-white z-10 py-1.5 px-5 text-xs font-semibold uppercase no-underline tracking-normal disabled:pointer-events-none">Follow</a>
             </div>
         </section>
