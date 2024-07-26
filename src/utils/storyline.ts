@@ -1,6 +1,5 @@
 import { toJpeg } from 'html-to-image';
 
-
 let storyline = null;
 // Slides
 let currentSlide = 0;
@@ -63,14 +62,13 @@ const createControls = () => {
     // Previous button
     prev = document.createElement('button');
     prev.type = 'button';
-    prev.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
-    // prev.setAttribute('disabled', true);
+    prev.classList.add('z-[10000]', 'cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
     prev.addEventListener('click', prevHandler)
 
     // Next button
     next = document.createElement('button');
     next.type = 'button';
-    next.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
+    next.classList.add('z-[10000]', 'cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
     next.addEventListener('click', nextHandler)
 
     controls.appendChild(prev);
