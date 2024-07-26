@@ -13,7 +13,7 @@ export const POST: APIRoute = async ({ request }) => {
 
 
   const body = await request.json();
-  const { accessToken } = body;
+  const { accessToken, username } = body;
 
   if (!accessToken) {
     return new Response(JSON.stringify({ error: "Access token is required" }), {
@@ -39,9 +39,11 @@ export const POST: APIRoute = async ({ request }) => {
       };
     });
 
+    let popularityMedian = tracks.reduce((acc, track) => acc + track.popularity, 0) / tracks.length;
+
     let dataLyrics = await getLyrics(tracks);
 
-    let result = await getSummary(dataLyrics);
+    let result = await getSummary(dataLyrics, username, popularityMedian);
 
     return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
