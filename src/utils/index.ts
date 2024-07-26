@@ -14,6 +14,9 @@ let next = null
 let prev = null; 
 // Indicators
 let indicators = [];
+let startHoldTime = null;
+let pressHoldTime = 0;
+let holdTime = 0;
 
 const singleSlide = () => {
     slides[0].classList.remove('hidden');
@@ -22,6 +25,7 @@ const singleSlide = () => {
 }
 
 const multipleSlides = () => {
+    startHoldTime = new Date().getTime();
     createIndicators();
     createControls();
     changeSlide(currentSlide);
@@ -82,6 +86,7 @@ const prevHandler = () => {
     indicators[currentSlide + 1].classList.remove('item-loading');
     indicators[currentSlide].classList.remove('item-loaded');
     if (currentSlide !== slides.length) {
+        resetTimes();
         changeSlide(currentSlide);
     }
 }
@@ -92,6 +97,7 @@ const nextHandler = () => {
     indicators[currentSlide - 1].classList.remove('item-loading');
     indicators[currentSlide - 1].classList.add('item-loaded');
     if (currentSlide > 0) {
+        resetTimes();
         changeSlide(currentSlide);
     }
 }
@@ -109,6 +115,11 @@ const changeSlide = (index: number) => {
     slides[currentSlide].setAttribute('aria-hidden', 'false');    
 
     indicators[currentSlide].classList.add('item-loading');
+    const indicatorBar = indicators[currentSlide].querySelector('.indicator-bar');
+    if (indicatorBar.style.animationPlayState === 'paused') {
+        indicatorBar.style.animationPlayState = 'running';
+        holdTime = new Date().getTime() - pressHoldTime;
+    }
 
     clearTimeout(time);
     time = setTimeout(() => {
@@ -118,13 +129,15 @@ const changeSlide = (index: number) => {
             indicators[currentSlide].classList.add('item-loaded');
             indicators[currentSlide].classList.remove('item-loading');
         }
-    }, 4500)
+    }, holdTime > 0 ? 4500 - (pressHoldTime - startHoldTime) : 4500);
 }
 
 export const handleMouseDown = () => {
     handleMouseUp();
     holdTimer = setTimeout(() => {
-        indicators[currentSlide].classList.remove('item-loading');
+        const indicatorBar = indicators[currentSlide].querySelector('.indicator-bar');
+        indicatorBar.style.animationPlayState = 'paused';
+        pressHoldTime = new Date().getTime() - holdTime;
         isHold = true;
     }, 500); // 500ms hold time after mouse down 
 };
@@ -145,4 +158,9 @@ export const handleGetImage = async () => {
     a.href = dataUrl;
     a.download = 'storyline-screenshot.jpg';
     a.click();
+}
+
+const resetTimes = () => {
+    holdTime = 0;
+    startHoldTime = new Date().getTime();
 }
