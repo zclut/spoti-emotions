@@ -1,16 +1,17 @@
 import { useStore } from '@nanostores/react';
 import { useEffect } from 'react';
-import { storyLine } from 'store';
-import { initStoryLine, handleGetImage } from 'utils';
+import { storyLine } from '@/store';
+import { initStoryLine, handleGetImage } from '@/utils';
+
 
 const Storyline = () => {
-    const $storyLine = useStore(storyLine);
+  const $storyLine = useStore(storyLine);
 
-    useEffect(() => {
-        if ($storyLine && $storyLine.length > 0) {
-            initStoryLine();
-        }
-    }, [$storyLine]);
+  useEffect(() => {
+    if ($storyLine && $storyLine.length > 0) {
+      initStoryLine();
+    }
+  }, [$storyLine]);
 
     return (
         $storyLine && $storyLine.length > 0 ? (
@@ -43,19 +44,19 @@ const Storyline = () => {
                             className="w-full h-[40vh] object-cover"
                         />
 
-                        <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[50px]">
-                            {body}
-                        </div>
-                    </div>
-                ))}
+            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[50px]">
+              {body}
             </div>
-            {/* Footer */}
-            <div className="absolute bottom-0 left-0 flex justify-start items-center p-[15px] w-full z-50">
-                <img
-                    src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                    alt=""
-                    className="flex-none w-6 h-6 rounded-full mr-2"
-                />
+          </div>
+        ))}
+      </div>
+      {/* Footer */}
+      <div className="absolute bottom-0 left-0 flex justify-start items-center p-[15px] w-full z-50">
+        <img
+          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+          alt=""
+          className="flex-none w-6 h-6 rounded-full mr-2"
+        />
 
                 <span 
                     onClick={handleGetImage}

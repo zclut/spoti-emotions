@@ -4,9 +4,14 @@
     "jsx": "react-jsx",
     "jsxImportSource": "react",
     "lib": ["ES2015", "DOM"],
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@lib/*": ["lib/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
-  }
+  },
+  "exclude": [
+    "public"
+  ]
 }

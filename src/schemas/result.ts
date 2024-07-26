@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { StoryLineSchema } from "./storyline";
+import { StoryLineSchema } from "@/schemas/storyline";
 
 export const StoryLineResultSchema = z.object({
   results: z.array(StoryLineSchema),

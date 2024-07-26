@@ -1,18 +1,69 @@
 ---
-import Logout from "icons/Logout.astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  image: string;
+  username: string;
+}
+
+let { image, username } = Astro.props as Props;
+
+if (!image) {
+  image = "/images/default-avatar.webp";
+}
 ---
 
 <button
-  class="flex items-center w-auto p-3 rounded-md bg-secondary border border-red-700 text-red-700 hover:bg-red-700 hover:text-secondary transition duration-300 ease-in-out"
-  id="logout"
+  id="dropdownDefaultButton"
+  data-dropdown-toggle="dropdown"
+  class="text-white rounded-full bg-secondary focus:ring-4 focus:outline-none focus:bg-gray-900 font-medium text-sm px-5 py-2.5 text-center inline-flex items-center"
+  type="button"
 >
-  <Logout class:list={"w-8 h-8 mr-2"} />
-
-  <span>Cerrar sesión</span>
+  <Image
+    src={image}
+    alt="Imagen de perfil"
+    width={40}
+    height={40}
+    class="w-8 h-8 mr-2 rounded-full bg-none"
+  />
+  {username}
+  <svg
+    class="w-2.5 h-2.5 ms-3"
+    aria-hidden="true"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 10 6"
+  >
+    <path
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="m1 1 4 4 4-4"></path>
+  </svg>
 </button>
 
+<!-- Dropdown menu -->
+<div
+  id="dropdown"
+  class="z-10 hidden bg-secondary divide-y divide-bg-gray-800 rounded-lg shadow w-44"
+>
+  <ul
+    class="py-2 text-sm text-gray-700"
+    aria-labelledby="dropdownDefaultButton"
+  >
+    <li>
+      <button
+        id="logout"
+        class="block w-full px-4 py-2 text-white hover:text-gray-300"
+        >Cerrar Sesión</button
+      >
+    </li>
+  </ul>
+</div>
+
 <script>
-  import { $ } from "@lib/dom-selector";
+  import { $ } from "@/lib/dom-selector";
 
   const { signOut } = await import("auth-astro/client");
 

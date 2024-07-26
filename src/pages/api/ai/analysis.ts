@@ -1,9 +1,17 @@
 import type { APIRoute } from "astro";
-import { getTopTracks } from "../../../services/spotify";
-import { getLyrics } from "../../../services/lyrics";
-import { getSummary } from "../../../lib/ai-summary";
+import { getTopTracks } from "@/services/spotify";
+import { getLyrics } from "@/services/lyrics";
+import { getSummary } from "@/lib/ai-summary";
+import { FAKEDATA } from "@/lib/fake-data";
 
 export const POST: APIRoute = async ({ request }) => {
+  if(import.meta.env.DEBUG){
+    console.log("WARNING: You are using fake data");
+    
+    return new Response(JSON.stringify(FAKEDATA), { status: 200 });
+  }
+
+
   const body = await request.json();
   const { accessToken } = body;
 
