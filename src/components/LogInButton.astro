@@ -1,0 +1,41 @@
+---
+import Spotify from "@/icons/Spotify.astro";
+---
+
+<button
+  class="flex items-center w-auto p-3 rounded-md bg-secondary border border-primary text-primary hover:bg-primary hover:text-secondary transition duration-300 ease-in-out"
+  id="login"
+>
+  <Spotify class:list={"w-8 h-8 mr-2"} />
+  <span>¡Inicia sesión en Spotify!</span>
+</button>
+
+<script>
+  import { $ } from "../lib/dom-selector.ts";
+
+  const $login = $("#login");
+  if ($login) {
+    $login.onclick = () => {
+      const width = 600;
+      const height = 700;
+      const left = window.innerWidth / 2 - width / 2;
+      const top = window.innerHeight / 2 - height / 2;
+
+      window.open(
+        "/auth/spotify",
+        "Spotify Login",
+        `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${width}, height=${height}, top=${top}, left=${left}`
+      );
+
+      $login.setAttribute("aria-disabled", "true");
+      const $span = $login.querySelector("span");
+
+      if ($span) $span.innerText = "Iniciando sesión...";
+      // Añade un temporizador que restablezca el botón después de 3 segundos
+      setTimeout(() => {
+        $login.removeAttribute("aria-disabled");
+        if ($span) $span.innerText = "¡Inicia sesión!";
+      }, 3000);
+    };
+  }
+</script>

@@ -1,0 +1,55 @@
+---
+import type { User } from "@auth/core/types";
+import Spinner from "../icons/Spinner.astro";
+
+interface Props {
+  user: User;
+}
+
+const { user } = Astro.props as Props;
+
+const label = user ? "Analyze" : "Sign in to analyze";
+---
+
+<button
+  data-token={user.id}
+  class="flex items-center w-auto p-3 rounded-md bg-secondary border border-primary text-primary hover:bg-primary hover:text-secondary transition duration-300 ease-in-out"
+  id="analysis-button"
+>
+  <Spinner class:list={"w-8 h-7 hidden"} id="spinner" />
+  <span class="">{label}</span>
+</button>
+
+<script>
+  import { $ } from "@/lib/dom-selector";
+  import { storyLine } from "@/store";
+
+  const $analysisButton = $("#analysis-button");
+  const $spinner = $("#spinner");
+  if ($analysisButton) {
+    $analysisButton.onclick = () => {
+      const { token } = $analysisButton.dataset;
+      $spinner.classList.remove("hidden");
+      $analysisButton.setAttribute("aria-disabled", "true");
+      fetch("/api/ai/analysis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accessToken: token }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          storyLine.set(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          $spinner.classList.add("hidden");
+          $analysisButton.removeAttribute("aria-disabled");
+        });
+    };
+  }
+</script>
