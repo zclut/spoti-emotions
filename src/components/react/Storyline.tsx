@@ -8,9 +8,10 @@ import {
   handleMouseUp,
 } from "@/utils/storyline";
 import { createBackground } from "@/utils/common";
+import { DEFAULT_AVATAR } from "@/utils/const";
 
-const Storyline = () => {
-  const $storyLine = useStore(storyLine);
+const Storyline = ({ user }) => {
+  let $storyLine = useStore(storyLine);
 
   useEffect(() => {
     if ($storyLine && $storyLine.length > 0) {
@@ -29,14 +30,16 @@ const Storyline = () => {
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       id="storyline"
-      className="h-[40vh] w-64 rounded-lg relative overflow-hidden tracking-[2.8px]"
+      className="h-[60vh] w-64  rounded-lg relative overflow-hidden tracking-[2.8px]"
     >
       {/* Header */}
       <div
         id="header"
         className="storyline-header absolute top-0 left-0 flex justify-start items-center p-[15px] w-full z-50"
       >
-        <h6 className="my-0 text-[1.1rem] uppercase text-white">storyline</h6>
+        <h6 className="my-0 text-[0.8rem] uppercase text-white">
+          Spoti<span className="text-gradient">Emotions</span>
+        </h6>
       </div>
       {/* Slider */}
       <div id="slider" className="relative h-full overflow-hidden">
@@ -52,11 +55,16 @@ const Storyline = () => {
               alt=""
               className="w-full h-[40vh] object-cover"
             /> */}
-            <div id={`img-${index}`} className="absolute w-full h-[40vh]">
+            <div id={`img-${index}`} className="absolute w-full h-[40vh]"/>
 
-            </div>
-            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[50px] z-50">
-              {body}
+            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[50px]">
+              {body.map((text, index) => {
+                return (
+                  <p key={index} className="mb-2">
+                    {text}
+                  </p>
+                );
+              })}
             </div>
           </div>
         ))}
@@ -64,23 +72,22 @@ const Storyline = () => {
       {/* Footer */}
       <div className="z-[10000] absolute bottom-0 left-0 flex justify-start items-center p-[15px] w-full">
         <img
-          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+          src={user.image ?? DEFAULT_AVATAR}
           alt=""
           className="flex-none w-6 h-6 rounded-full mr-2"
         />
 
-        <span
-          onClick={handleGetImage}
-          className="cursor-pointer w-full text-white text-xs tracking-normal whitespace-nowrap overflow-hidden text-ellipsis"
-        >
-          author Unknown
+        <span className="w-full text-white text-xs tracking-normal whitespace-nowrap overflow-hidden text-ellipsis truncate">
+          {user.name}
         </span>
-        <a
-          href="#"
-          className="relative inline-block bg-transparent border border-white border-opacity-45 rounded-[25px] text-white z-10 py-1.5 px-5 text-xs font-semibold uppercase no-underline tracking-normal disabled:pointer-events-none"
-        >
-          Follow
-        </a>
+
+        <button id="btn-download" onClick={handleGetImage} className="bg-none">
+          <img
+            src="/images/icons/Download.svg"
+            className="w-6 h-6 cursor-pointer text-white"
+            alt="Icono de una nube con una flecha"
+          />
+        </button>
       </div>
     </section>
   ) : null;

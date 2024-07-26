@@ -7,3 +7,5 @@ export const GITHUB_ACCOUNTS: { name: string, url: string, image: string }[] = [
     { name: "klasinky", url: `${GITHUB_URL}/klasinky`, image: `${IMAGE_AUTHORS_PATH}/klasinky.webp` },
     { name: "romentoss", url: `${GITHUB_URL}/romentoss`, image: `${IMAGE_AUTHORS_PATH}/romentoss.webp` }
 ]
+
+export const DEFAULT_AVATAR = "/images/default-avatar.webp"

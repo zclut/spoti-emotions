@@ -11,6 +11,8 @@ let isHold = false;
 // Buttons
 let next = null
 let prev = null; 
+// hide elements
+let btnDownload = null;
 // Indicators
 let indicators = [];
 let startHoldTime = null;
@@ -32,8 +34,13 @@ const multipleSlides = () => {
 
 export const initStoryLine = () => {
     storyline = document.getElementById('storyline')
+    storyline.querySelectorAll('.indicator').forEach(child => {
+        child.remove();
+    });
+    currentSlide = 0;
     slider = document.getElementById('slider');
     slides = document.querySelectorAll('.slide');
+    btnDownload = document.getElementById('btn-download');
     slides.length > 1 ? multipleSlides() : singleSlide();
 }
 
@@ -150,8 +157,9 @@ export const handleMouseUp = async () => {
 };
 
 export const handleGetImage = async () => {
-    const dataUrl = await toJpeg(slides[currentSlide], { quality: 1 });
-
+    btnDownload.classList.add('hidden');
+    const dataUrl = await toJpeg(storyline, { quality: 1 });
+    btnDownload.classList.remove('hidden');
     const a = document.createElement('a');
     a.href = dataUrl;
     a.download = 'storyline-screenshot.jpg';

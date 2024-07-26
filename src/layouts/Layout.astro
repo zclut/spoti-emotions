@@ -1,4 +1,17 @@
 ---
+import LogoutButton from "@/components/LogoutButton.astro";
+import { getSession } from "auth-astro/server";
+import Title from "@/components/Title.astro";
+import Footer from "@/components/Footer.astro";
+
+const session = await getSession(Astro.request);
+let image = null;
+let name = null;
+if (session) {
+  image = session.user.image;
+  name = session.user.name;
+}
+
 interface Props {
   title: string;
 }
@@ -16,19 +29,54 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
-    <slot />
+  <body class="h-screen flex flex-col">
+    <header class="flex items-center justify-between p-4 text-white">
+      <div class="flex-1"></div>
+      <div class="flex-1 text-center">
+        <Title text="Spoti">
+          <Fragment slot="after_title">Emotions</Fragment>
+        </Title>
+      </div>
+      <div class="flex-1 flex justify-end">
+        {session ? <LogoutButton image={image ?? null} username={name} /> : ""}
+      </div>
+    </header>
+    <main class="flex-1 overflow-y-auto">
+      <slot />
+      <Footer />
+    </main>
   </body>
+
   <script
     is:inline
     src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"
   ></script>
 </html>
 <style is:global>
+  :root {
+    --accent: 14, 103, 53;
+    --accent-light: 29, 154, 84;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+
   html {
     font-family: "CircularStd", system-ui, sans-serif;
     background-color: #121212;
     background-image: url("/images/background/basic.svg");
+  }
+
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
   }
 
   @font-face {

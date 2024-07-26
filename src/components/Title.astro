@@ -6,31 +6,10 @@ interface Props {
 const { text } = Astro.props as Props;
 ---
 
-<h1 class="text-[4rem] leading-none text-center font-bold text-white">
+<h1 class="text-[2.5rem] leading-none text-center font-bold text-white">
   <span class="text-gradient"><slot name="before_title" /></span>
 
   {text}
 
   <span class="text-gradient"><slot name="after_title" /></span>
 </h1>
-
-<style>
-  :root {
-    --accent: 14, 103, 53;
-    --accent-light: 29, 154, 84;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%
-    );
-  }
-  .text-gradient {
-    background-image: var(--accent-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400%;
-    background-position: 0%;
-  }
-</style>
