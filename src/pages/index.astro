@@ -1,37 +1,21 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 
-import Title from "@/components/Title.astro";
 import Greetings from "@/components/Greetings.astro";
 import AnalysisButton from "@/components/AnalysisButton.astro";
 import LogInButton from "@/components/LogInButton.astro";
-import LogoutButton from "@/components/LogoutButton.astro";
 import Footer from "@/components/Footer.astro";
 import Storyline from "@/components/react/Storyline";
 
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
-let image = null;
-let name = null;
-if(session){
-  image = session.user.image;
-  name = session.user.name;
-}
 
 ---
 
 <Layout title="SpotiEmotions">
-  <header class="flex align-center justify-end p-4">
-    {session ?  <LogoutButton image={image?? null} username={name} /> : ""}
-  </header>
 
   <section class="flex flex-col justify-between items-center h-screen py-10">
-    <!-- Title -->
-    <Title text="Spoti">
-      <Fragment slot="after_title">Emotions</Fragment>
-    </Title>
-
     <!-- Analysis button or login button -->
     {!session ? <LogInButton /> : (
       <Greetings>

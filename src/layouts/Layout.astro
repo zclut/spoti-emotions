@@ -1,4 +1,16 @@
 ---
+import LogoutButton from "@/components/LogoutButton.astro";
+import { getSession } from "auth-astro/server";
+import Title from "@/components/Title.astro";
+
+const session = await getSession(Astro.request);
+let image = null;
+let name = null;
+if (session) {
+  image = session.user.image;
+  name = session.user.name;
+}
+
 interface Props {
   title: string;
 }
@@ -17,6 +29,23 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
+    <header class="flex items-center justify-between p-4">
+      <!-- Contenedor vacío para balancear -->
+      <div class="flex-1"></div>
+
+      <!-- Título centrado -->
+      <div class="flex-1 text-center">
+        <Title text="Spoti">
+          <Fragment slot="after_title">Emotions</Fragment>
+        </Title>
+      </div>
+
+      <!-- Botón de logout -->
+      <div class="flex-1 flex justify-end">
+        {session ? <LogoutButton image={image ?? null} username={name} /> : ""}
+      </div>
+    </header>
+
     <slot />
   </body>
   <script
