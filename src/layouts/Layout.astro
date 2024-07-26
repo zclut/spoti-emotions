@@ -2,6 +2,7 @@
 import LogoutButton from "@/components/LogoutButton.astro";
 import { getSession } from "auth-astro/server";
 import Title from "@/components/Title.astro";
+import Footer from "@/components/Footer.astro";
 
 const session = await getSession(Astro.request);
 let image = null;
@@ -28,26 +29,24 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
-    <header class="flex items-center justify-between p-4">
-      <!-- Contenedor vacío para balancear -->
+  <body class="h-screen flex flex-col">
+    <header class="flex items-center justify-between p-4 text-white">
       <div class="flex-1"></div>
-
-      <!-- Título centrado -->
       <div class="flex-1 text-center">
         <Title text="Spoti">
           <Fragment slot="after_title">Emotions</Fragment>
         </Title>
       </div>
-
-      <!-- Botón de logout -->
       <div class="flex-1 flex justify-end">
         {session ? <LogoutButton image={image ?? null} username={name} /> : ""}
       </div>
     </header>
-
-    <slot />
+    <main class="flex-1 overflow-y-auto">
+      <slot />
+      <Footer />
+    </main>
   </body>
+
   <script
     is:inline
     src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"
