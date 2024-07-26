@@ -2,18 +2,22 @@ import type { APIRoute } from "astro";
 import { getTopTracks } from "@/services/spotify";
 import { getLyrics } from "@/services/lyrics";
 import { getSummary } from "@/lib/ai-summary";
-import { FAKEDATA } from "@/lib/fake-data";
+import { FAKEDATA, FAKEFAVORITETRACKS } from "@/lib/fake-data";
 
 export const POST: APIRoute = async ({ request }) => {
-  if (import.meta.env.DEBUG) {
-    let rs = FAKEDATA.map((item: any) => {
-      return {
-        ...item,
-        body: item.body.split("."),
-      };
-    });
-    return new Response(JSON.stringify(rs), { status: 200 });
-  }
+  // if (import.meta.env.DEBUG) {
+  //   let rs = FAKEDATA.map((item: any) => {
+  //     return {
+  //       ...item,
+  //       body: item.body.split("."),
+  //     };
+  //   });
+  //   let result = {
+  //     storyline: rs,
+  //     favoriteTracks: [...FAKEFAVORITETRACKS],
+  //   }
+  //   return new Response(JSON.stringify(result), { status: 200 });
+  // }
 
   const body = await request.json();
   const { accessToken, username } = body;
@@ -31,13 +35,13 @@ export const POST: APIRoute = async ({ request }) => {
         status: response.status,
       });
     }
-
     let tracks = data.items.map((track: any) => {
       return {
         name: track.name,
         artist: track.artists.map((artist: any) => artist.name).join(", "),
         popularity: track.popularity,
         explicit: track.explicit,
+        image: track.album.images[0].url ?? null,
       };
     });
 
@@ -50,11 +54,16 @@ export const POST: APIRoute = async ({ request }) => {
     result = result.map((item: any) => {
       return {
         ...item,
-        body: item.body.replace(".", ".sdsd"),
+        body: item.body.split("."),
       };
     });
-
-    return new Response(JSON.stringify(result), { status: 200 });
+    // get the 3 best tracks
+    let favoriteTracks = tracks.slice(0, 5);
+    let returnData = {
+      storyline: result,
+      favoriteTracks: favoriteTracks,
+    }
+    return new Response(JSON.stringify(returnData), { status: 200 });
   } catch (error) {
     console.error(error);
     return new Response(JSON.stringify({ error: error.message }), {

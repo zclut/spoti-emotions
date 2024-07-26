@@ -12,22 +12,19 @@ const session = await getSession(Astro.request);
 ---
 
 <Layout title="SpotiEmotions">
-  <section class="flex flex-col mt-5 items-center h-full">
+  <section class="flex flex-col  items-center h-screen py-10">
     {
       !session ? (
         <LogInButton />
       ) : (
-        <>
           <Greetings>
             <Fragment slot="before_title">{session.user.name}</Fragment>
           </Greetings>
           <AnalysisButton class={"mt-6"} user={session.user} />
-        </>
+          <Storyline user={session.user} client:only="react" />
       )
     }
 
-    <div>
-      <Storyline user={session.user} client:only="react" />
-    </div>
+
   </section>
 </Layout>

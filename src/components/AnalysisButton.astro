@@ -25,7 +25,7 @@ const label = user ? "Analyze" : "Sign in to analyze";
 
 <script>
   import { $ } from "@/lib/dom-selector";
-  import { storyLine } from "@/store";
+  import { storyLine, favoriteTracks } from "@/store";
 
   const $analysisButton = $("#analysis-button");
   const $spinner = $("#spinner");
@@ -43,7 +43,8 @@ const label = user ? "Analyze" : "Sign in to analyze";
       })
         .then((res) => res.json())
         .then((data) => {
-          storyLine.set(data);
+          storyLine.set(data.storyline);
+          favoriteTracks.set(data.favoriteTracks);
           console.log(storyLine.get());
         })
         .catch((error) => {

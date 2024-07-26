@@ -20,3 +20,27 @@ export const FAKEDATA = [
       "colorGradient": "#3498DB"
   }
 ]
+
+export const FAKEFAVORITETRACKS = [
+    {
+        "name": "End of Beginning",
+        "artist": "Djo",
+        "popularity": 93,
+        "explicit": false,
+        "image": "https://i.scdn.co/image/ab67616d0000b273fddfffec51b4580acae727c1"
+    },
+    {
+        "name": "Laugh It Off",
+        "artist": "Post Malone",
+        "popularity": 57,
+        "explicit": true,
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
+        "name": "Riptide",
+        "artist": "Vance Joy",
+        "popularity": 84,
+        "explicit": false,
+        "image": "https://i.scdn.co/image/ab67616d0000b273d3ce97395ff522b0d70c1094"
+    }
+]

@@ -6,7 +6,7 @@ export const getSystemPrompt = () => {
 
     Structure:
     Title: 100 characters: The title of the story line ONLY.
-    Body: 200 characters: In this section generate a story based on the theme of the story line.
+    Body: 100 characters: In this section generate a story based on the theme of the story line.
     Do not mention the title in this section. Be creative and engaging in this section.
     Example: If the theme is Mood, you can analyze the user's top tracks and generate a story line based on the mood of the tracks.
     colorGradient: A string that represents the color of the story line. It can be a hex color but 
@@ -36,6 +36,8 @@ export const getPrompt = (tracks: any[], username: string, popularityMedian: num
     Do not mention my name in the story line title.
     Do not mention that you are talking about the user's top tracks, just generate a story line based on the analysis of the tracks.
     You can mention a name of a track in the story line and the artist.
+
+    speak in spanish
 
     These are my top tracks: ${JSON.stringify(tracks)}.
   `;

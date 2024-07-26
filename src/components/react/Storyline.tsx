@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
-import { storyLine } from "@/store";
+import { storyLine, favoriteTracks } from "@/store";
 import {
   initStoryLine,
   handleGetImage,
@@ -12,12 +12,13 @@ import { DEFAULT_AVATAR } from "@/utils/const";
 
 const Storyline = ({ user }) => {
   let $storyLine = useStore(storyLine);
+  let $favoriteTracks = useStore(favoriteTracks);
 
   useEffect(() => {
     if ($storyLine && $storyLine.length > 0) {
       initStoryLine();
       $storyLine.forEach((_, index) => {
-        createBackground(`#img-${index}`);
+        // createBackground(`#img-${index}`);
       });
     }
   }, [$storyLine]);
@@ -50,17 +51,22 @@ const Storyline = ({ user }) => {
             id={`slide-${index}`}
             className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
           >
-            {/* <img
+            <img
               src="https://images.pexels.com/photos/2272854/pexels-photo-2272854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
               alt=""
-              className="w-full h-[40vh] object-cover"
-            /> */}
-            <div id={`img-${index}`} className="absolute w-full h-[40vh]"/>
+              className="w-full h-[60vh] object-cover"
+            />
+            {/* <div id={`img-${index}`} className="absolute w-full h-[60vh]" /> */}
 
-            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[50px]">
+            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
               {body.map((text, index) => {
                 return (
-                  <p key={index} className="mb-2">
+                  <p
+                    key={index}
+                    className={
+                      index % 2 == 0 ? "text-right mb-5" : "text-left mb-5"
+                    }
+                  >
                     {text}
                   </p>
                 );
@@ -68,6 +74,42 @@ const Storyline = ({ user }) => {
             </div>
           </div>
         ))}
+        <div
+          key={"slide-favorite"}
+          id={`slide--favorite`}
+          className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
+        >
+          <img
+            src="https://images.pexels.com/photos/2272854/pexels-photo-2272854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+            alt=""
+            className="w-full h-[60vh] object-cover"
+          />
+          <div id={`img-favorite`} className="absolute w-full h-[60vh]" />
+
+          <div className="absolute w-full px-[5px] py-[5px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
+            <p className="mb-5 text-2xl">
+              Tus 5 <span className="text-gradient">canciones favoritas</span>
+            </p>
+            <div className=" py-[5px] my-auto">
+              {$favoriteTracks.map(({ artist, image, name }, index) => (
+                <div
+                  key={index + "-favoritetrack"}
+                  className="flex items-center  p-2 mb-2 rounded-lg"
+                >
+                  <img
+                    src={image}
+                    alt={name}
+                    className="w-10 h-10 rounded-full mx-2"
+                  />
+                  <div className="text-left ">
+                    <p className="mb-1 text-sm font-bold">{name}</p>
+                    <p className="text-xs text-gray-300 truncate">{artist}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
       {/* Footer */}
       <div className="z-[10000] absolute bottom-0 left-0 flex justify-start items-center p-[15px] w-full">

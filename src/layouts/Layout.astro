@@ -29,7 +29,7 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="h-screen flex flex-col">
+  <body class="h-screen">
     <header class="flex items-center justify-between p-4 text-white">
       <div class="flex-1"></div>
       <div class="flex-1 text-center">
@@ -41,7 +41,7 @@ const { title } = Astro.props;
         {session ? <LogoutButton image={image ?? null} username={name} /> : ""}
       </div>
     </header>
-    <main class="flex-1 overflow-y-auto">
+    <main class="overflow-y-auto">
       <slot />
       <Footer />
     </main>
