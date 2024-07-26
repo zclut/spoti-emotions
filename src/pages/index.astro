@@ -27,7 +27,7 @@ const session = await getSession(Astro.request);
     }
 
     <div>
-      <Storyline client:only="react" />
+      <Storyline user={session.user} client:only="react" />
     </div>
   </section>
 </Layout>

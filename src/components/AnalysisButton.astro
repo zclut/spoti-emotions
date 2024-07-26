@@ -43,8 +43,8 @@ const label = user ? "Analyze" : "Sign in to analyze";
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           storyLine.set(data);
+          console.log(storyLine.get());
         })
         .catch((error) => {
           console.error(error);
