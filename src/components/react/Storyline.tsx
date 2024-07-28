@@ -29,7 +29,7 @@ const Storyline = ({ user }) => {
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       id="storyline"
-      className="h-[60vh] w-64  rounded-lg relative overflow-hidden tracking-[2.8px]"
+      className="h-[60vh] w-[19rem] rounded-lg relative overflow-hidden tracking-[2.8px]"
     >
       {/* Header */}
       <div

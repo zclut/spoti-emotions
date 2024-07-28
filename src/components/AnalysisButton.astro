@@ -53,6 +53,7 @@ const label = user ? "Analyze" : "Sign in to analyze";
         .finally(() => {
           $spinner.classList.add("hidden");
           $analysisButton.removeAttribute("aria-disabled");
+          $analysisButton.classList.add("hidden");
         });
     };
   }

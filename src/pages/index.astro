@@ -5,6 +5,7 @@ import Greetings from "@/components/Greetings.astro";
 import AnalysisButton from "@/components/AnalysisButton.astro";
 import LogInButton from "@/components/LogInButton.astro";
 import Storyline from "@/components/react/Storyline";
+import Footer from "@/components/Footer.astro";
 
 import { getSession } from "auth-astro/server";
 
@@ -12,7 +13,7 @@ const session = await getSession(Astro.request);
 ---
 
 <Layout title="SpotiEmotions">
-  <section class="flex flex-col  items-center h-screen py-10">
+  <section class="flex flex-col items-center justify-between h-full">
     {
       !session ? (
         <LogInButton />
@@ -22,9 +23,8 @@ const session = await getSession(Astro.request);
           </Greetings>
           <AnalysisButton class={"mt-6"} user={session.user} />
           <Storyline user={session.user} client:only="react" />
+          <Footer />
       )
     }
-
-
   </section>
 </Layout>
