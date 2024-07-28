@@ -1,4 +1,5 @@
 import { toJpeg } from 'html-to-image';
+import { createBackground } from './common';
 
 let storyline = null;
 // Slides
@@ -86,6 +87,9 @@ const createControls = () => {
 
 const prevHandler = () => {
     if(isHold) return;
+    if (currentSlide > 0) {
+        createBackground('#bg-slider', currentSlide - 1);
+    }
     currentSlide = currentSlide === 0 ? 0 : currentSlide - 1;
     indicators[currentSlide + 1].classList.remove('item-loaded');
     indicators[currentSlide + 1].classList.remove('item-loading');
@@ -98,6 +102,9 @@ const prevHandler = () => {
 
 const nextHandler = () => {
     if(isHold) return;
+    if (currentSlide < slides.length - 1) {
+        createBackground('#bg-slider', currentSlide + 1);
+    }
     currentSlide = currentSlide === slides.length - 1 ? slides.length - 1 : currentSlide + 1;
     indicators[currentSlide - 1].classList.remove('item-loading');
     indicators[currentSlide - 1].classList.add('item-loaded');
@@ -144,7 +151,7 @@ export const handleMouseDown = () => {
         indicatorBar.style.animationPlayState = 'paused';
         pressHoldTime = new Date().getTime() - holdTime;
         isHold = true;
-    }, 500); // 500ms hold time after mouse down 
+    }, 250); // 500ms hold time after mouse down 
 };
 
 export const handleMouseUp = async () => {
@@ -157,13 +164,15 @@ export const handleMouseUp = async () => {
 };
 
 export const handleGetImage = async () => {
-    btnDownload.classList.add('hidden');
-    const dataUrl = await toJpeg(storyline, { quality: 1 });
-    btnDownload.classList.remove('hidden');
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = 'storyline-screenshot.jpg';
-    a.click();
+    requestAnimationFrame(async () => {
+        btnDownload.classList.add('hidden');
+        const dataUrl = await toJpeg(storyline, { quality: 1 });
+        btnDownload.classList.remove('hidden');
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'storyline-screenshot.jpg';
+        a.click();
+    })
 }
 
 const resetTimes = () => {

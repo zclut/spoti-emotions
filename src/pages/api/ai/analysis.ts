@@ -5,19 +5,19 @@ import { getSummary } from "@/lib/ai-summary";
 import { FAKEDATA, FAKEFAVORITETRACKS } from "@/lib/fake-data";
 
 export const POST: APIRoute = async ({ request }) => {
-  // if (import.meta.env.DEBUG) {
-  //   let rs = FAKEDATA.map((item: any) => {
-  //     return {
-  //       ...item,
-  //       body: item.body.split("."),
-  //     };
-  //   });
-  //   let result = {
-  //     storyline: rs,
-  //     favoriteTracks: [...FAKEFAVORITETRACKS],
-  //   }
-  //   return new Response(JSON.stringify(result), { status: 200 });
-  // }
+  if (import.meta.env.DEBUG) {
+    let rs = FAKEDATA.map((item: any) => {
+      return {
+        ...item,
+        body: item.body.split("."),
+      };
+    });
+    let result = {
+      storyline: rs,
+      favoriteTracks: [...FAKEFAVORITETRACKS],
+    }
+    return new Response(JSON.stringify(result), { status: 200 });
+  }
 
   const body = await request.json();
   const { accessToken, username } = body;

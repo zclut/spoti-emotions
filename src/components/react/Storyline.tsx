@@ -17,9 +17,7 @@ const Storyline = ({ user }) => {
   useEffect(() => {
     if ($storyLine && $storyLine.length > 0) {
       initStoryLine();
-      $storyLine.forEach((_, index) => {
-        // createBackground(`#img-${index}`);
-      });
+      createBackground(`#bg-slider`);
     }
   }, [$storyLine]);
 
@@ -43,7 +41,9 @@ const Storyline = ({ user }) => {
         </h6>
       </div>
       {/* Slider */}
-      <div id="slider" className="relative h-full overflow-hidden">
+      <div id="slider" className="relative h-full overflow-hidden ">
+        <div id="bg-slider" className="absolute w-full h-[60vh]" />
+
         {/* Slide */}
         {$storyLine.map(({ title, body }, index) => (
           <div
@@ -51,12 +51,6 @@ const Storyline = ({ user }) => {
             id={`slide-${index}`}
             className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
           >
-            <img
-              src="https://images.pexels.com/photos/2272854/pexels-photo-2272854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-              alt=""
-              className="w-full h-[60vh] object-cover"
-            />
-            {/* <div id={`img-${index}`} className="absolute w-full h-[60vh]" /> */}
 
             <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
               {body.map((text, index) => {
@@ -79,13 +73,6 @@ const Storyline = ({ user }) => {
           id={`slide--favorite`}
           className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
         >
-          <img
-            src="https://images.pexels.com/photos/2272854/pexels-photo-2272854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            alt=""
-            className="w-full h-[60vh] object-cover"
-          />
-          <div id={`img-favorite`} className="absolute w-full h-[60vh]" />
-
           <div className="absolute w-full px-[5px] py-[5px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
             <p className="mb-5 text-2xl">
               Tus 5 <span className="text-gradient">canciones favoritas</span>
