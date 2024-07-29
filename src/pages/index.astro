@@ -13,17 +13,21 @@ const session = await getSession(Astro.request);
 ---
 
 <Layout title="SpotiEmotions">
-  <section class="flex flex-col items-center justify-between h-full">
+  {
+    session && (
+      <Greetings>
+        <Fragment slot="before_title">{session.user.name}</Fragment>
+      </Greetings>
+    )
+  }
+
+  <section class="flex flex-1 flex-col items-center justify-center">
     {
       !session ? (
         <LogInButton />
       ) : (
-          <Greetings>
-            <Fragment slot="before_title">{session.user.name}</Fragment>
-          </Greetings>
-          <AnalysisButton class={"mt-6"} user={session.user} />
+          <AnalysisButton user={session.user} />
           <Storyline user={session.user} client:only="react" />
-          <Footer />
       )
     }
   </section>

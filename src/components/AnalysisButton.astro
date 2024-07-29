@@ -4,7 +4,6 @@ import Spinner from "../icons/Spinner.astro";
 
 interface Props {
   user: User;
-  class: string;
 }
 
 const { user } = Astro.props as Props;
@@ -15,12 +14,11 @@ const label = user ? "Analyze" : "Sign in to analyze";
 <button
   data-token={user.id}
   data-username={user.name}
-  class:list={Astro.props.class}
   class="flex items-center w-auto p-3 rounded-md bg-secondary border border-primary text-primary hover:bg-primary hover:text-secondary transition duration-300 ease-in-out"
   id="analysis-button"
 >
   <Spinner class:list={"w-8 h-7 hidden"} id="spinner" />
-  <span class="">{label}</span>
+  <span>{label}</span>
 </button>
 
 <script>
