@@ -1,6 +1,6 @@
 export const getTopTracks = async (accessToken: string) => {
   const response = await fetch(
-    "https://api.spotify.com/v1/me/top/tracks?limit=2",
+    "https://api.spotify.com/v1/me/top/tracks?limit=10",
     {
       method: "GET",
       headers: {

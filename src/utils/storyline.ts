@@ -1,5 +1,5 @@
 import { toJpeg } from 'html-to-image';
-
+import { createBackground } from './common';
 
 let storyline = null;
 // Slides
@@ -12,8 +12,13 @@ let isHold = false;
 // Buttons
 let next = null
 let prev = null; 
+// hide elements
+let btnDownload = null;
 // Indicators
 let indicators = [];
+let startHoldTime = null;
+let pressHoldTime = 0;
+let holdTime = 0;
 
 const singleSlide = () => {
     slides[0].classList.remove('hidden');
@@ -22,6 +27,7 @@ const singleSlide = () => {
 }
 
 const multipleSlides = () => {
+    startHoldTime = new Date().getTime();
     createIndicators();
     createControls();
     changeSlide(currentSlide);
@@ -29,8 +35,13 @@ const multipleSlides = () => {
 
 export const initStoryLine = () => {
     storyline = document.getElementById('storyline')
+    storyline.querySelectorAll('.indicator').forEach(child => {
+        child.remove();
+    });
+    currentSlide = 0;
     slider = document.getElementById('slider');
     slides = document.querySelectorAll('.slide');
+    btnDownload = document.getElementById('btn-download');
     slides.length > 1 ? multipleSlides() : singleSlide();
 }
 
@@ -59,14 +70,13 @@ const createControls = () => {
     // Previous button
     prev = document.createElement('button');
     prev.type = 'button';
-    prev.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
-    // prev.setAttribute('disabled', true);
+    prev.classList.add('z-[10000]', 'cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'left-0', 'bg-transparent', 'border-none', 'shadow-none')
     prev.addEventListener('click', prevHandler)
 
     // Next button
     next = document.createElement('button');
     next.type = 'button';
-    next.classList.add('cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
+    next.classList.add('z-[10000]', 'cursor-default', 'absolute', 'h-full', 'w-1/2', 'top-0', 'right-0', 'bg-transparent', 'border-none', 'shadow-none')
     next.addEventListener('click', nextHandler)
 
     controls.appendChild(prev);
@@ -77,21 +87,29 @@ const createControls = () => {
 
 const prevHandler = () => {
     if(isHold) return;
+    if (currentSlide > 0) {
+        createBackground('#bg-slider', currentSlide - 1);
+    }
     currentSlide = currentSlide === 0 ? 0 : currentSlide - 1;
     indicators[currentSlide + 1].classList.remove('item-loaded');
     indicators[currentSlide + 1].classList.remove('item-loading');
     indicators[currentSlide].classList.remove('item-loaded');
     if (currentSlide !== slides.length) {
+        resetTimes();
         changeSlide(currentSlide);
     }
 }
 
 const nextHandler = () => {
     if(isHold) return;
+    if (currentSlide < slides.length - 1) {
+        createBackground('#bg-slider', currentSlide + 1);
+    }
     currentSlide = currentSlide === slides.length - 1 ? slides.length - 1 : currentSlide + 1;
     indicators[currentSlide - 1].classList.remove('item-loading');
     indicators[currentSlide - 1].classList.add('item-loaded');
     if (currentSlide > 0) {
+        resetTimes();
         changeSlide(currentSlide);
     }
 }
@@ -109,6 +127,11 @@ const changeSlide = (index: number) => {
     slides[currentSlide].setAttribute('aria-hidden', 'false');    
 
     indicators[currentSlide].classList.add('item-loading');
+    const indicatorBar = indicators[currentSlide].querySelector('.indicator-bar');
+    if (indicatorBar.style.animationPlayState === 'paused') {
+        indicatorBar.style.animationPlayState = 'running';
+        holdTime = new Date().getTime() - pressHoldTime;
+    }
 
     clearTimeout(time);
     time = setTimeout(() => {
@@ -118,15 +141,17 @@ const changeSlide = (index: number) => {
             indicators[currentSlide].classList.add('item-loaded');
             indicators[currentSlide].classList.remove('item-loading');
         }
-    }, 4500)
+    }, holdTime > 0 ? 4500 - (pressHoldTime - startHoldTime) : 4500);
 }
 
 export const handleMouseDown = () => {
     handleMouseUp();
     holdTimer = setTimeout(() => {
-        indicators[currentSlide].classList.remove('item-loading');
+        const indicatorBar = indicators[currentSlide].querySelector('.indicator-bar');
+        indicatorBar.style.animationPlayState = 'paused';
+        pressHoldTime = new Date().getTime() - holdTime;
         isHold = true;
-    }, 500); // 500ms hold time after mouse down 
+    }, 250); // 500ms hold time after mouse down 
 };
 
 export const handleMouseUp = async () => {
@@ -139,10 +164,18 @@ export const handleMouseUp = async () => {
 };
 
 export const handleGetImage = async () => {
-    const dataUrl = await toJpeg(slides[currentSlide], { quality: 1 });
+    requestAnimationFrame(async () => {
+        btnDownload.classList.add('hidden');
+        const dataUrl = await toJpeg(storyline, { quality: 1 });
+        btnDownload.classList.remove('hidden');
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'storyline-screenshot.jpg';
+        a.click();
+    })
+}
 
-    const a = document.createElement('a');
-    a.href = dataUrl;
-    a.download = 'storyline-screenshot.jpg';
-    a.click();
+const resetTimes = () => {
+    holdTime = 0;
+    startHoldTime = new Date().getTime();
 }

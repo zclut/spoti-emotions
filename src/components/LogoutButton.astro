@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import Logout from "@/icons/Logout.astro";
 
 interface Props {
   image: string;
@@ -16,7 +17,7 @@ if (!image) {
 <button
   id="dropdownDefaultButton"
   data-dropdown-toggle="dropdown"
-  class="text-white rounded-full bg-secondary focus:ring-4 focus:outline-none focus:bg-gray-900 font-medium text-sm px-5 py-2.5 text-center inline-flex items-center"
+  class="text-white rounded-full bg-secondary focus:ring-4 focus:outline-none focus:bg-gray-900 font-medium text-sm px-5 py-2.5 text-center inline-flex items-center gap-2 md:gap-4"
   type="button"
 >
   <Image
@@ -24,9 +25,9 @@ if (!image) {
     alt="Imagen de perfil"
     width={40}
     height={40}
-    class="w-8 h-8 mr-2 rounded-full bg-none"
+    class="w-8 h-8 rounded-full bg-none"
   />
-  {username}
+  <span class="hidden md:inline">{username}</span>
   <svg
     class="w-2.5 h-2.5 ms-3"
     aria-hidden="true"
@@ -55,9 +56,11 @@ if (!image) {
     <li>
       <button
         id="logout"
-        class="block w-full px-4 py-2 text-white hover:text-gray-300"
-        >Cerrar Sesión</button
+        class="w-full px-4 py-2 text-white hover:text-gray-300 flex items-center"
       >
+        <Logout class:list={"mr-2 w-6"} />
+        Cerrar Sesión
+      </button>
     </li>
   </ul>
 </div>

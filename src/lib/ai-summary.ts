@@ -14,13 +14,13 @@ const groq = createOpenAI({
   baseURL: "https://api.groq.com/openai/v1",
 });
 
-export const getSummary = async (tracks: any[]) => {
-  const result = await analyzeAI(tracks);
+export const getSummary = async (tracks: any[], username: string, popularityMedian: number) => {
+  const result = await analyzeAI(tracks, username, popularityMedian);
   return result;
 };
 
-async function analyzeAI(tracks: any[]) {
-  let prompt = getPrompt(tracks);
+async function analyzeAI(tracks: any[], username: string, popularityMedian: number) {
+  let prompt = getPrompt(tracks, username, popularityMedian);
 
   let systemPrompt = getSystemPrompt();
 

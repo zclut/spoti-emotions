@@ -5,7 +5,9 @@ const hour = now.getHours();
 const greeting = greetings.find((g, i) => i === Math.floor(hour / 8));
 ---
 
-<h5 class="text-[1.5rem] leading-none text-center font-bold text-white">
+<h5
+  class:list={Astro.props.class}
+  class="text-[1.5rem] leading-none text-center font-bold text-white">
   {greeting},
   <span class="text-gradient"><slot name="before_title" /></span>
   <span class="text-gradient"><slot name="after_title" /></span>
