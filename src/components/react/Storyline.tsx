@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { storyLine, favoriteTracks } from "@/store";
 import {
   initStoryLine,
@@ -13,11 +13,18 @@ import { DEFAULT_AVATAR, ANIMATION_TEXT_DURATION } from "@/utils/const";
 const Storyline = ({ user }) => {
   let $storyLine = useStore(storyLine);
   let $favoriteTracks = useStore(favoriteTracks);
+  const storyLineRef = useRef(null);
 
   useEffect(() => {
     if ($storyLine && $storyLine.length > 0) {
       initStoryLine();
       createBackground(`#bg-slider`);
+      const offset = -55;
+      const elementPosition = storyLineRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition + offset,
+        behavior: 'smooth',
+      });
     }
   }, [$storyLine]);
 
@@ -29,7 +36,8 @@ const Storyline = ({ user }) => {
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       id="storyline"
-      className="h-[60vh] w-[19rem] rounded-lg relative overflow-hidden tracking-[2.8px] animate-expand-horizontally animate-iteration-count-once animate-duration-500 animate-delay-none"
+      ref={storyLineRef}
+      className="h-screen md:h-[60vh] w-screen md:w-[19rem] rounded-lg relative overflow-hidden tracking-[2.8px] animate-expand-horizontally animate-iteration-count-once animate-duration-500 animate-delay-none"
     >
       {/* Header */}
       <div
@@ -42,7 +50,7 @@ const Storyline = ({ user }) => {
       </div>
       {/* Slider */}
       <div id="slider" className="relative h-full overflow-hidden">
-        <div id="bg-slider" className="absolute w-full h-[60vh]" />
+        <div id="bg-slider" className="absolute w-screen md:w-full h-screen md:h-[60vh]" />
 
         {/* Slide */}
         {$storyLine.map(({ title, body }, indexStory) => (
@@ -52,7 +60,7 @@ const Storyline = ({ user }) => {
             className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
           >
 
-            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
+            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 top-[20%]">
               {body.map((text, indexBody) => {
                 return (
                   <p
@@ -74,7 +82,7 @@ const Storyline = ({ user }) => {
           id={`slide--favorite`}
           className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
         >
-          <div className="absolute w-full px-[5px] py-[5px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
+          <div className="absolute w-full px-[5px] py-[5px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 top-[10%]">
             <p className="mb-5 text-2xl animate-rubber-band animate-duration-1000">
               Tus 5 <span className="text-gradient">canciones favoritas</span>
             </p>
