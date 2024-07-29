@@ -9,3 +9,5 @@ export const GITHUB_ACCOUNTS: { name: string, url: string, image: string }[] = [
 ]
 
 export const DEFAULT_AVATAR = "/images/default-avatar.webp"
+
+export const ANIMATION_TEXT_DURATION = 300

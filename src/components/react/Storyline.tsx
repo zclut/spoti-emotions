@@ -8,7 +8,7 @@ import {
   handleMouseUp,
 } from "@/utils/storyline";
 import { createBackground } from "@/utils/common";
-import { DEFAULT_AVATAR } from "@/utils/const";
+import { DEFAULT_AVATAR, ANIMATION_TEXT_DURATION } from "@/utils/const";
 
 const Storyline = ({ user }) => {
   let $storyLine = useStore(storyLine);
@@ -45,21 +45,22 @@ const Storyline = ({ user }) => {
         <div id="bg-slider" className="absolute w-full h-[60vh]" />
 
         {/* Slide */}
-        {$storyLine.map(({ title, body }, index) => (
+        {$storyLine.map(({ title, body }, indexStory) => (
           <div
-            key={index}
-            id={`slide-${index}`}
+            key={indexStory}
+            id={`slide-${indexStory}`}
             className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
           >
 
             <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 bottom-[30px]">
-              {body.map((text, index) => {
+              {body.map((text, indexBody) => {
                 return (
                   <p
-                    key={index}
+                    key={indexBody}
                     className={
-                      index % 2 == 0 ? "text-right mb-5" : "text-left mb-5"
+                      `${indexBody % 2 == 0 ? "text-right" : "text-left"} mb-5 ${indexBody % 2 == 0 ? 'animate-fade-in-left' : 'animate-fade-in-right'} animate-duration-slow`
                     }
+                    style={{ animationDelay: `${(indexBody + 1) * ANIMATION_TEXT_DURATION}ms` }}
                   >
                     {text}
                   </p>
