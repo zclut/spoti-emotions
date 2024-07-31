@@ -15,3 +15,11 @@ const getLyric = async (artist, track) => {
   const data = await response.json();
   return data.lyrics || null;
 };
+
+
+export const normalizeSummary = (summary: any[]) => {
+  return summary.map((item: any) => ({
+    ...item,
+    body: item.body.split("."),
+  }));
+}

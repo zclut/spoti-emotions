@@ -44,3 +44,23 @@ export const FAKEFAVORITETRACKS = [
         "image": "https://i.scdn.co/image/ab67616d0000b273d3ce97395ff522b0d70c1094"
     }
 ]
+
+export const FAKEFAVORITEARTISTS = [
+    {
+        "name": "Djo",
+        "genres": ["indie", "alternative"],
+        "image": "https://i.scdn.co/image/ab67616d0000b273fddfffec51b4580acae727c1"
+    },
+    {
+        "name": "Post Malone",
+        "genres": ["hip hop", "pop"],
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
+        "name": "Vance Joy",
+        "genres": ["indie", "pop"],
+        "image": "https://i.scdn.co/image/ab67616d0000b273d3ce97395ff522b0d70c1094"
+    }
+]
+
+export const FAKEFAVORITEGENRES = ["indie", "pop", "alternative", "hip hop", "rock"]
