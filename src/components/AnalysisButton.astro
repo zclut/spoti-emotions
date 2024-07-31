@@ -24,14 +24,43 @@ const label = user ? "Analyze" : "Sign in to analyze";
 <script>
   import { $ } from "@/lib/dom-selector";
   import { storyLine, favoriteTracks } from "@/store";
+  import { signOut } from "auth-astro/client";
 
   const $analysisButton = $("#analysis-button");
   const $spinner = $("#spinner");
   if ($analysisButton) {
-    $analysisButton.onclick = () => {
+    $analysisButton.onclick = async () => {
       const { token, username } = $analysisButton.dataset;
       $spinner.classList.remove("hidden");
       $analysisButton.setAttribute("aria-disabled", "true");
+      try {
+        const response = await fetch("/api/ai/analysis", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ accessToken: token, username: username }),
+        });
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          await signOut();
+          return;
+        }
+
+        storyLine.set(data.storyline);
+        favoriteTracks.set(data.favoriteTracks);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        $spinner.classList.add("hidden");
+        $analysisButton.removeAttribute("aria-disabled");
+        $analysisButton.classList.add("hidden");
+      }
+
+
+
+
       fetch("/api/ai/analysis", {
         method: "POST",
         headers: {
@@ -43,7 +72,6 @@ const label = user ? "Analyze" : "Sign in to analyze";
         .then((data) => {
           storyLine.set(data.storyline);
           favoriteTracks.set(data.favoriteTracks);
-          console.log(storyLine.get());
         })
         .catch((error) => {
           console.error(error);

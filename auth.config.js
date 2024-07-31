@@ -1,6 +1,4 @@
-// auth.config.ts
 import Spotify from "@auth/core/providers/spotify";
-import Twitch from "@auth/core/providers/twitch";
 import { defineConfig } from "auth-astro";
 
 export default defineConfig({
@@ -24,7 +22,6 @@ export default defineConfig({
       user: {
         ...session.user,
         id: token.accessToken,
-        // accessToken: token.accessToken,
       },
     }),
   },

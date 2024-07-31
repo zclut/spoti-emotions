@@ -35,13 +35,13 @@ export const POST: APIRoute = async ({ request }) => {
 
   const body = await request.json();
   const { accessToken, username } = body;
-  if (!accessToken) handleResponse({ error: "Access token is required" }, STATUS.BAD_REQUEST);
+  if (!accessToken) return handleResponse({ error: "Access token is required" }, STATUS.BAD_REQUEST);
 
   try {
     // Get top tracks
     const responseTracks = await getTopTracks(accessToken);
     const { items: itemsTrack, error: errorTrack } = await responseTracks.json();
-    if (responseTracks.status !== 200) handleResponse({ error: errorTrack }, responseTracks.status);
+    if (responseTracks.status !== 200) return handleResponse({ error: errorTrack }, responseTracks.status);
     const tracks = normalizeTracks(itemsTrack)
 
     const popularityMedian = tracks.reduce((acc, track) => acc + track.popularity, 0) / tracks.length;
@@ -57,7 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Get the 5 best artists
     const responseArtists = await getTopArtists(accessToken);
     const { items: itemsArtist, error: errorArtist } = await responseArtists.json();
-    if (responseArtists.status !== 200) handleResponse({ error: errorArtist }, responseArtists.status);
+    if (responseArtists.status !== 200) return handleResponse({ error: errorArtist }, responseArtists.status);
 
     const artists = normalizeArtists(itemsArtist);
     const genres = getTopGenres(artists);
