@@ -72,6 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
     return handleResponse(returnData, STATUS.OK);
   } catch (error) {
     console.error(error);
-    handleResponse({ error: error.message }, STATUS.INTERNAL_SERVER_ERROR);
+    return handleResponse({ error: error.message }, STATUS.INTERNAL_SERVER_ERROR);
+    
   }
 };

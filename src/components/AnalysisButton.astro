@@ -1,15 +1,17 @@
 ---
 import type { User } from "@auth/core/types";
 import Spinner from "../icons/Spinner.astro";
-
+import Loader from "./Loader.astro";
 interface Props {
   user: User;
 }
 
 const { user } = Astro.props as Props;
 
-const label = user ? "Analyze" : "Sign in to analyze";
+const label = user ? "¡Analiza tu música!" : "Inicia sesión";
 ---
+
+<Loader />
 
 <button
   data-token={user.id}
@@ -23,13 +25,15 @@ const label = user ? "Analyze" : "Sign in to analyze";
 
 <script>
   import { $ } from "@/lib/dom-selector";
-  import { storyLine, favoriteTracks } from "@/store";
+  import { storyLine, favoriteTracks, loadingStoryLine } from "@/store";
   import { signOut } from "auth-astro/client";
 
   const $analysisButton = $("#analysis-button");
   const $spinner = $("#spinner");
   if ($analysisButton) {
     $analysisButton.onclick = async () => {
+      loadingStoryLine.set(true);
+      $analysisButton.classList.add("hidden");
       const { token, username } = $analysisButton.dataset;
       $spinner.classList.remove("hidden");
       $analysisButton.setAttribute("aria-disabled", "true");
@@ -52,35 +56,12 @@ const label = user ? "Analyze" : "Sign in to analyze";
         favoriteTracks.set(data.favoriteTracks);
       } catch (error) {
         console.error(error);
+        $analysisButton.classList.remove("hidden");
       } finally {
         $spinner.classList.add("hidden");
         $analysisButton.removeAttribute("aria-disabled");
-        $analysisButton.classList.add("hidden");
+        loadingStoryLine.set(false);
       }
-
-
-
-
-      fetch("/api/ai/analysis", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ accessToken: token, username: username }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          storyLine.set(data.storyline);
-          favoriteTracks.set(data.favoriteTracks);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          $spinner.classList.add("hidden");
-          $analysisButton.removeAttribute("aria-disabled");
-          $analysisButton.classList.add("hidden");
-        });
     };
   }
 </script>
