@@ -11,7 +11,10 @@ import { getSession } from "auth-astro/server";
 const session = await getSession(Astro.request);
 ---
 
-<Layout title="SpotiEmotions">
+<Layout 
+  title="SpotiEmotions"
+  description="SpotiEmotions transforma tus canciones más escuchadas en Spotify en resúmenes emocionales usando IA. Descubre tus emociones, artistas y géneros favoritos de manera sencilla."
+>
   {
     session && (
       <Greetings>
