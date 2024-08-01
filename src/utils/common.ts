@@ -5,7 +5,7 @@ import * as THREE from "three"
 
 let effect = null
 
-const COLORS = [0x1e1e70, 0x690b9d, 0x14c3fc, 0x692169, 0x117d1b]
+const COLORS = [0x1e1e70, 0x690b9d, 0x14c3fc, 0x692169, 0x117d1b, 0xca0c65]
 const BACKGROUNDS = [HALO, FOG, CELLS]
 const CONFIG = (color: number) => [
     {
@@ -32,7 +32,6 @@ const CONFIG = (color: number) => [
         size: 1.5,
         speed: 3
     }
-
 ]
 
 export const createBackground = (id: string, currentSlide: number = 0) => {
