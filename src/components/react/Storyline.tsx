@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
-import { useEffect, useRef } from "react";
-import { storyLine, favoriteTracks } from "@/store";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { storyLine, favoriteTracks, favoriteArtists, favoriteGenres } from "@/store";
 import {
   initStoryLine,
   handleGetImage,
@@ -9,16 +9,35 @@ import {
 } from "@/utils/storyline";
 import { createBackground } from "@/utils/common";
 import { DEFAULT_AVATAR, ANIMATION_TEXT_DURATION } from "@/utils/const";
+import CustomSlide from "./CustomSlide";
 
 const Storyline = ({ user }) => {
   let $storyLine = useStore(storyLine);
   let $favoriteTracks = useStore(favoriteTracks);
+  let $favoriteArtists = useStore(favoriteArtists);
+  let $favoriteGenres = useStore(favoriteGenres);
   const storyLineRef = useRef(null);
+  const [isShortScreen, setIsShortScreen] = useState(false);
+  const [slidesShuflle, setSlidesShuffle] = useState([]);
+
+  const checkScreenHeight = () => {
+    const windowHeight = window.innerHeight;
+    setIsShortScreen(windowHeight < 824);
+  };
+
+  const shufleSlides = () => {
+    const customSlides = [
+      { type: 'custom', component: <CustomSlide items={$favoriteArtists} title="artistas favoritos" attribute="artists"/> },
+      { type: 'custom', component: <CustomSlide items={$favoriteGenres} title="géneros favoritos" attribute="genres"/> },
+      { type: 'custom', component: <CustomSlide items={$favoriteTracks} title="canciones favoritas" attribute="tracks"/> },
+    ]
+    const slidesShuffle = customSlides.flatMap((slide, index) => [slide, $storyLine[index]]).reverse();
+    setSlidesShuffle(slidesShuffle);
+  }
 
   useEffect(() => {
     if ($storyLine && $storyLine.length > 0) {
-      initStoryLine();
-      createBackground(`#bg-slider`);
+      shufleSlides();
       const offset = -55;
       const elementPosition = storyLineRef.current.getBoundingClientRect().top + window.scrollY;
       window.scrollTo({
@@ -27,6 +46,21 @@ const Storyline = ({ user }) => {
       });
     }
   }, [$storyLine]);
+
+  useEffect(() => {
+    if (slidesShuflle.length > 0) {
+      createBackground(`#bg-slider`);
+      initStoryLine();
+    }
+  }, [slidesShuflle]);
+
+  useEffect(() => {
+    checkScreenHeight();
+    window.addEventListener('resize', checkScreenHeight);
+    return () => {
+      window.removeEventListener('resize', checkScreenHeight);
+    };
+  }, []);
 
   return $storyLine && $storyLine.length > 0 ? (
     <section
@@ -37,7 +71,7 @@ const Storyline = ({ user }) => {
       onTouchEnd={handleMouseUp}
       id="storyline"
       ref={storyLineRef}
-      className="h-screen md:h-[60vh] w-screen md:w-[19rem] rounded-lg relative overflow-hidden tracking-[2.8px] animate-expand-horizontally animate-iteration-count-once animate-duration-500 animate-delay-none"
+      className={`${isShortScreen ? 'h-[45rem] sm:h-[60vh]' : 'h-[90vh] sm:h-[60vh]' } w-screen sm:w-[19rem] rounded-lg relative overflow-hidden tracking-[2.8px] animate-expand-horizontally animate-iteration-count-once animate-duration-500 animate-delay-none`}
     >
       {/* Header */}
       <div
@@ -50,66 +84,33 @@ const Storyline = ({ user }) => {
       </div>
       {/* Slider */}
       <div id="slider" className="relative h-full overflow-hidden">
-        <div id="bg-slider" className="absolute w-screen md:w-full h-screen md:h-[60vh]" />
-
+        <div id="bg-slider" className={`absolute w-screen sm:w-full ${isShortScreen ? 'h-[45rem] sm:h-[60vh]' : 'h-[90vh] sm:h-[60vh]'}`} />
         {/* Slide */}
-        {$storyLine.map(({ title, body }, indexStory) => (
-          <div
-            key={indexStory}
-            id={`slide-${indexStory}`}
-            className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
-          >
-
-            <div className="absolute w-full px-[30px] py-[15px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 top-[20%]">
-              {body.map((text, indexBody) => {
-                return (
-                  <p
-                    key={indexBody}
-                    className={
-                      `${indexBody % 2 == 0 ? "text-right" : "text-left"} mb-5 ${indexBody % 2 == 0 ? 'animate-fade-in-left' : 'animate-fade-in-right'} animate-duration-slower`
-                    }
-                    style={{ animationDelay: `${(indexBody + 1) * ANIMATION_TEXT_DURATION}ms` }}
-                  >
-                    {text}
-                  </p>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-        <div
-          key={"slide-favorite"}
-          id={`slide--favorite`}
-          className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
-        >
-          <div className="absolute w-full px-[5px] py-[5px] font-semibold leading-6 text-md tracking-normal text-white text-center left-0 top-[10%]">
-            <p className="mb-5 text-2xl animate-rubber-band animate-duration-1000">
-              Tus 5 <span className="text-gradient">canciones favoritas</span>
-            </p>
-            <div className=" py-[5px] my-auto">
-              {$favoriteTracks.map(({ artist, image, name }, index) => (
-                <div
-                  key={index + "-favoritetrack"}
-                  className="flex items-center  p-2 mb-2 rounded-lg"
-                >
-                  <img
-                    src={image}
-                    alt={name}
-                    className="w-10 h-10 rounded-full mx-2 animate-fade-in-left animate-duration-1000"
-                    style={{ animationDelay: `${(++index) * ANIMATION_TEXT_DURATION}ms` }}
-                  />
-                  <div 
-                    className="text-left animate-fade-in-left animate-duration-1000"
-                    style={{ animationDelay: `${((++index) * ANIMATION_TEXT_DURATION) + ANIMATION_TEXT_DURATION}ms` }}
-                  >
-                    <p className="mb-1 text-sm font-bold">{name}</p>
-                    <p className="text-xs text-gray-300 truncate">{artist}</p>
-                  </div>
+        {slidesShuflle.map(({ type, body, component }, indexStory) => (
+          type === 'custom' 
+            ? <Fragment key={indexStory}>{component}</Fragment> 
+            : (
+              <div
+                key={indexStory}
+                id={`slide-${indexStory}`}
+                className="slide before:absolute before:content-none before:block before:top-0 before:left-0 before:h-full before:w-full hidden"
+              >
+                <div className="absolute w-full px-[30px] py-[15px] font-semibold text-white left-0 top-[10%]">
+                  {body.map((text, indexBody) => (
+                    <p
+                      key={indexBody}
+                      className={
+                        `${indexBody % 2 == 0 ? "text-right" : "text-left"} mb-8 ${indexBody % 2 == 0 ? 'animate-fade-in-left' : 'animate-fade-in-right'} animate-duration-slower ${isShortScreen ? 'text-xl leading-8 tracking-wide' : 'text-2xl leading-9 tracking-normal'} sm:text-base sm:leading-7 sm:tracking-normal`
+                      }
+                      style={{ animationDelay: `${(indexBody + 1) * ANIMATION_TEXT_DURATION}ms` }}
+                    >
+                      {text}
+                    </p>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
+              </div>
+            )))}
+
       </div>
       {/* Footer */}
       <div className="z-[10000] absolute bottom-0 left-0 flex justify-start items-center p-[15px] w-full">

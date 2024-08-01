@@ -6,11 +6,9 @@ export const getSystemPrompt = () => {
 
     Structure:
     Title: 100 characters: The title of the story line ONLY.
-    Body: 100 characters: In this section generate a story based on the theme of the story line.
+    Body: 300 characters: In this section generate a story based on the theme of the story line.
     Do not mention the title in this section. Be creative and engaging in this section.
     Example: If the theme is Mood, you can analyze the user's top tracks and generate a story line based on the mood of the tracks.
-    colorGradient: A string that represents the color of the story line. It can be a hex color but 
-    based of the theme and the analysis of the user's top track. 
   
     Write in Spanish.
   `;

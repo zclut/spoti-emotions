@@ -1,10 +1,22 @@
 import type { APIRoute } from "astro";
-import { getTopTracks } from "@/services/spotify";
-import { getLyrics } from "@/services/lyrics";
+import { getTopArtists, getTopGenres, getTopTracks, normalizeArtists, normalizeTracks } from "@/services/spotify";
+import { getLyrics, normalizeSummary } from "@/services/lyrics";
 import { getSummary } from "@/lib/ai-summary";
-import { FAKEDATA, FAKEFAVORITETRACKS } from "@/lib/fake-data";
+import { FAKEDATA, FAKEFAVORITEARTISTS, FAKEFAVORITEGENRES, FAKEFAVORITETRACKS } from "@/lib/fake-data";
+
+const handleResponse = (json: any, status: number) => {
+  return new Response(JSON.stringify(json), { status });
+};
+
+const STATUS = {
+  OK: 200,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  INTERNAL_SERVER_ERROR: 500,
+};
 
 export const POST: APIRoute = async ({ request }) => {
+  // If we are in development mode, we will return fake data
   if (import.meta.env.DEBUG) {
     let rs = FAKEDATA.map((item: any) => {
       return {
@@ -15,59 +27,52 @@ export const POST: APIRoute = async ({ request }) => {
     let result = {
       storyline: rs,
       favoriteTracks: [...FAKEFAVORITETRACKS],
+      favoriteArtists: [...FAKEFAVORITEARTISTS],
+      favoriteGenres: [...FAKEFAVORITEGENRES],
     }
-    return new Response(JSON.stringify(result), { status: 200 });
+    return handleResponse(result, STATUS.OK);
   }
 
   const body = await request.json();
   const { accessToken, username } = body;
+  if (!accessToken) return handleResponse({ error: "Access token is required" }, STATUS.BAD_REQUEST);
 
-  if (!accessToken) {
-    return new Response(JSON.stringify({ error: "Access token is required" }), {
-      status: 400,
-    });
-  }
   try {
-    const response = await getTopTracks(accessToken);
-    const data = await response.json();
-    if (response.status !== 200) {
-      return new Response(JSON.stringify({ error: data.error }), {
-        status: response.status,
-      });
-    }
-    let tracks = data.items.map((track: any) => {
-      return {
-        name: track.name,
-        artist: track.artists.map((artist: any) => artist.name).join(", "),
-        popularity: track.popularity,
-        explicit: track.explicit,
-        image: track.album.images[0].url ?? null,
-      };
-    });
+    // Get top tracks
+    const responseTracks = await getTopTracks(accessToken);
+    const { items: itemsTrack, error: errorTrack } = await responseTracks.json();
+    if (responseTracks.status !== 200) return handleResponse({ error: errorTrack }, responseTracks.status);
+    const tracks = normalizeTracks(itemsTrack)
 
-    let popularityMedian =
-      tracks.reduce((acc, track) => acc + track.popularity, 0) / tracks.length;
+    const popularityMedian = tracks.reduce((acc, track) => acc + track.popularity, 0) / tracks.length;
 
-    let dataLyrics = await getLyrics(tracks);
+    // Get lyrics and summary
+    const dataLyrics = await getLyrics(tracks);
+    const result = await getSummary(dataLyrics, username, popularityMedian);
+    const storyline = normalizeSummary(result);
 
-    let result = await getSummary(dataLyrics, username, popularityMedian);
-    result = result.map((item: any) => {
-      return {
-        ...item,
-        body: item.body.split("."),
-      };
-    });
-    // get the 3 best tracks
-    let favoriteTracks = tracks.slice(0, 5);
+    // Get the 5 best tracks
+    const favoriteTracks = tracks.slice(0, 5);
+
+    // Get the 5 best artists
+    const responseArtists = await getTopArtists(accessToken);
+    const { items: itemsArtist, error: errorArtist } = await responseArtists.json();
+    if (responseArtists.status !== 200) return handleResponse({ error: errorArtist }, responseArtists.status);
+
+    const artists = normalizeArtists(itemsArtist);
+    const genres = getTopGenres(artists);
+
     let returnData = {
-      storyline: result,
+      storyline: storyline,
       favoriteTracks: favoriteTracks,
+      favoriteArtists: artists,
+      favoriteGenres: genres,
     }
-    return new Response(JSON.stringify(returnData), { status: 200 });
+    
+    return handleResponse(returnData, STATUS.OK);
   } catch (error) {
     console.error(error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-    });
+    return handleResponse({ error: error.message }, STATUS.INTERNAL_SERVER_ERROR);
+    
   }
 };

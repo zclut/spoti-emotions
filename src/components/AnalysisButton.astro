@@ -1,15 +1,17 @@
 ---
 import type { User } from "@auth/core/types";
 import Spinner from "../icons/Spinner.astro";
-
+import Loader from "./Loader.astro";
 interface Props {
   user: User;
 }
 
 const { user } = Astro.props as Props;
 
-const label = user ? "Analyze" : "Sign in to analyze";
+const label = user ? "¡Analiza tu música!" : "Inicia sesión";
 ---
+
+<Loader />
 
 <button
   data-token={user.id}
@@ -23,36 +25,45 @@ const label = user ? "Analyze" : "Sign in to analyze";
 
 <script>
   import { $ } from "@/lib/dom-selector";
-  import { storyLine, favoriteTracks } from "@/store";
+  import { storyLine, favoriteTracks, loadingStoryLine, favoriteArtists, favoriteGenres } from "@/store";
+  import { signOut } from "auth-astro/client";
 
   const $analysisButton = $("#analysis-button");
   const $spinner = $("#spinner");
   if ($analysisButton) {
-    $analysisButton.onclick = () => {
+    $analysisButton.onclick = async () => {
+      loadingStoryLine.set(true);
+      $analysisButton.classList.add("hidden");
       const { token, username } = $analysisButton.dataset;
       $spinner.classList.remove("hidden");
       $analysisButton.setAttribute("aria-disabled", "true");
-      fetch("/api/ai/analysis", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ accessToken: token, username: username }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          storyLine.set(data.storyline);
-          favoriteTracks.set(data.favoriteTracks);
-          console.log(storyLine.get());
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          $spinner.classList.add("hidden");
-          $analysisButton.removeAttribute("aria-disabled");
-          $analysisButton.classList.add("hidden");
+      try {
+        const response = await fetch("/api/ai/analysis", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ accessToken: token, username: username }),
         });
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          await signOut();
+          return;
+        }
+
+        storyLine.set(data.storyline);
+        favoriteTracks.set(data.favoriteTracks);
+        favoriteArtists.set(data.favoriteArtists);
+        favoriteGenres.set(data.favoriteGenres);
+      } catch (error) {
+        console.error(error);
+        $analysisButton.classList.remove("hidden");
+      } finally {
+        $spinner.classList.add("hidden");
+        $analysisButton.removeAttribute("aria-disabled");
+        loadingStoryLine.set(false);
+      }
     };
   }
 </script>

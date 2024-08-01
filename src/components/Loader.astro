@@ -1,0 +1,211 @@
+<div id="loader-storyline" class="text-center hidden">
+  <div class="loader"></div>
+  <p class="text-white text-2xl mt-4" id="loader-message"></p>
+</div>
+
+<script>
+  import { loadingStoryLine } from "@/store";
+
+  let initialMessages = [
+    "Analizando tu música...",
+    "Analizando tus gustos...",
+    "Vamos a analizar tu música...",
+    "Empezando el análisis...",
+  ];
+
+  let middleMessages = [
+    "Qué buena música tienes...",
+    "Vaya, vaya, vaya...",
+    "Esto se pone interesante...",
+    "Esto se pone bueno...",
+    "Hmmm, interesante...",
+    "¡Me encanta tu música!",
+  ];
+
+  let finalMessages = [
+    "¡Listo! Ya terminé...",
+    "¡Hecho! Ya terminé...",
+    "¡Uff, ya terminé!",
+    "¡Ya terminé!",
+    "Misión cumplida...",
+    "Me encantó analizar tu música...",
+    "Analizar tu música fue un placer...",
+    "Jeje ¡ya terminé!",
+    "asdqwdqjwdhjwq, me volví loco analizando tu música...",
+  ];
+
+  const initialMessage =
+    initialMessages[Math.floor(Math.random() * initialMessages.length)];
+  const middleMessage =
+    middleMessages[Math.floor(Math.random() * middleMessages.length)];
+  const finalMessage =
+    finalMessages[Math.floor(Math.random() * finalMessages.length)];
+
+  const loader = document.querySelector("#loader-message");
+  loader.textContent = initialMessage;
+
+  loadingStoryLine.subscribe((value) => {
+    if (!value) {
+      document.querySelector("#loader-storyline").classList.add("hidden");
+      document.querySelector("#loader-storyline").classList.remove("flex");
+    } else {
+      document.querySelector("#loader-storyline").classList.remove("hidden");
+      document.querySelector("#loader-storyline").classList.add("flex");
+
+      setTimeout(() => {
+        loader.textContent = middleMessage;
+      }, 2000);
+
+      setTimeout(() => {
+        loader.textContent = finalMessage;
+      }, 5000);
+    }
+  });
+</script>
+
+<style>
+  #loader-storyline {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .loader {
+    width: 9px;
+    height: 9px;
+    background: rgb(14, 154, 53);
+    color: rgb(14, 154, 53);
+    box-shadow:
+      -18px -9px,
+      0 -9px,
+      18px -9px,
+      -18px 0,
+      18px 0,
+      -18px 9px,
+      0 9px,
+      18px 9px,
+      -18px 18px,
+      0 18px,
+      18px 18px;
+    animation: l30 2s infinite;
+  }
+
+  @keyframes l30 {
+    10% {
+      box-shadow:
+        -18px -9px,
+        0 -9px,
+        18px -9px,
+        -18px 0,
+        18px 0,
+        -18px 9px 0 2px,
+        0 9px,
+        18px 9px 0 2px,
+        -18px 18px,
+        0 18px,
+        18px 18px;
+    }
+    20% {
+      box-shadow:
+        -18px -9px,
+        0 -9px,
+        18px -9px,
+        -18px 0,
+        18px 0,
+        -18px 9px,
+        0 9px,
+        18px 9px 0 2px,
+        -18px 18px 0 2px,
+        0 18px,
+        18px 18px;
+    }
+    30% {
+      box-shadow:
+        -18px -9px,
+        0 -9px,
+        18px -9px,
+        -18px 0 0 2px,
+        18px 0,
+        -18px 9px,
+        0 9px 0 2px,
+        18px 9px,
+        -18px 18px 0 2px,
+        0 18px,
+        18px 18px 0 2px;
+    }
+    40% {
+      box-shadow:
+        -18px -9px,
+        0 -9px,
+        18px -9px,
+        -18px 0 0 2px,
+        18px 0 0 2px,
+        -18px 9px,
+        0 9px,
+        18px 9px,
+        -18px 18px,
+        0 18px,
+        18px 18px 0 2px;
+    }
+    50% {
+      box-shadow:
+        -18px -9px,
+        0 -9px,
+        18px -9px,
+        -18px 0,
+        18px 0 0 2px,
+        -18px 9px 0 2px,
+        0 9px,
+        18px 9px,
+        -18px 18px,
+        0 18px,
+        18px 18px;
+    }
+    60% {
+      box-shadow:
+        -18px -9px,
+        0 -9px 0 2px,
+        18px -9px,
+        -18px 0,
+        18px 0,
+        -18px 9px 0 2px,
+        0 9px,
+        18px 9px,
+        -18px 18px 0 2px,
+        0 18px,
+        18px 18px;
+    }
+    70% {
+      box-shadow:
+        -18px -9px,
+        0 -9px 0 2px,
+        18px -9px 0 2px,
+        -18px 0,
+        18px 0,
+        -18px 9px,
+        0 9px,
+        18px 9px,
+        -18px 18px 0 2px,
+        0 18px,
+        18px 18px;
+    }
+    80% {
+      box-shadow:
+        -18px -9px 0 2px,
+        0 -9px,
+        18px -9px,
+        -18px 0,
+        18px 0,
+        -18px 9px,
+        0 9px,
+        18px 9px,
+        -18px 18px,
+        0 18px,
+        18px 18px 0 2px;
+    }
+    90% {
+      box-shadow:
+        -18px -9px 0 2px,
+        0 -9px;
+    }
+  }
+</style>

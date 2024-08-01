@@ -5,14 +5,16 @@ import Greetings from "@/components/Greetings.astro";
 import AnalysisButton from "@/components/AnalysisButton.astro";
 import LogInButton from "@/components/LogInButton.astro";
 import Storyline from "@/components/react/Storyline";
-import Footer from "@/components/Footer.astro";
 
 import { getSession } from "auth-astro/server";
 
 const session = await getSession(Astro.request);
 ---
 
-<Layout title="SpotiEmotions">
+<Layout 
+  title="SpotiEmotions"
+  description="SpotiEmotions transforma tus canciones más escuchadas en Spotify en resúmenes emocionales usando IA. Descubre tus emociones, artistas y géneros favoritos de manera sencilla."
+>
   {
     session && (
       <Greetings>
