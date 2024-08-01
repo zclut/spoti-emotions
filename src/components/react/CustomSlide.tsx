@@ -37,7 +37,7 @@ const CustomSlide = ({ items, title, attribute }) => {
                   }
 
                   <div 
-                    className={`${index % 2 == 1 ? 'animate-fade-in-left' : 'animate-fade-in-right' } animate-duration-1000`}
+                    className={`${index % 2 == 1 ? 'animate-fade-in-left text-left' : 'animate-fade-in-right text-right' } animate-duration-1000 whitespace-nowrap overflow-hidden text-ellipsis truncate`}
                     style={{ animationDelay: `${((++index) * ANIMATION_TEXT_DURATION) + ANIMATION_TEXT_DURATION}ms` }}
                   >
                     <p className="font-bold">{name}</p>
