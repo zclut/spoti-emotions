@@ -37,6 +37,20 @@ export const FAKEFAVORITETRACKS = [
         "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
     },
     {
+        "name": "Laugh It Off",
+        "artist": "Post Malone",
+        "popularity": 57,
+        "explicit": true,
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
+        "name": "Laugh It Off",
+        "artist": "Post Malone",
+        "popularity": 57,
+        "explicit": true,
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
         "name": "Riptide",
         "artist": "Vance Joy",
         "popularity": 84,
@@ -57,10 +71,36 @@ export const FAKEFAVORITEARTISTS = [
         "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
     },
     {
+        "name": "Post Malone",
+        "genres": ["hip hop", "pop"],
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
+        "name": "Post Malone",
+        "genres": ["hip hop", "pop"],
+        "image": "https://i.scdn.co/image/ab67616d0000b27371cae34ad5a39bdab78af13e"
+    },
+    {
         "name": "Vance Joy",
         "genres": ["indie", "pop"],
         "image": "https://i.scdn.co/image/ab67616d0000b273d3ce97395ff522b0d70c1094"
     }
 ]
 
-export const FAKEFAVORITEGENRES = ["indie", "pop", "alternative", "hip hop", "rock"]
+export const FAKEFAVORITEGENRES = [
+    {
+        "name": "indie"
+    },
+    {
+        "name": "pop"
+    },
+    {
+        "name": "alternative"
+    },
+    {
+        "name": "hip hop"
+    },
+    {
+        "name": "rock"
+    }
+]

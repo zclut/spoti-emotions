@@ -38,7 +38,8 @@ export const getTopGenres = (artists: any[]) => {
     }, {});
   const topGenres = Object.keys(counts)
     .sort((a, b) => counts[b] - counts[a])
-    .slice(0, 5 ?? counts.length);
+    .slice(0, 5 ?? counts.length)
+    .map(genre => ({ name: genre }));
   return topGenres;
 };
 
