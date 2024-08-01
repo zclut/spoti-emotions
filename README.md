@@ -1,46 +1,68 @@
-# SpotiEmotions
+# 🎶 SpotiEmotions 🎵
 
-```sh
-npm create astro@latest -- --template basics
+**SpotiEmotions** es una aplicación que utiliza la información de tu cuenta de Spotify para analizar tus canciones más escuchadas, extraer y resumir las letras mediante inteligencia artificial, y mostrar un resumen de tus emociones basado en tus canciones. Similar a las historias de Spotify Wrapped, esta herramienta proporciona una visión profunda de tus emociones, canciones, artistas y géneros más escuchados.
+
+## 👥 Autores
+
+- **zClut** - [Perfil de zClut](https://github.com/zclut)
+- **klasinky** - [Perfil de klasinky](https://github.com/klasinky)
+- **romentoss** - [Perfil de romentoss](https://github.com/romentoss)
+
+## 🚀 Instalación
+
+Para comenzar con **SpotiEmotions**, sigue estos pasos:
+
+1. **Clona el repositorio:**
+
+```bash
+git clone https://github.com/zclut/spoti-emotions.git
 ```
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+2. **Navega al directorio del proyecto:**
+```bash
+cd spoti-emotions
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+3. **Instala las dependencias:**
+```bash
+npm install
+# or
+yarn install
+```
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/**Preact** components.
+4. **Configura las variables de entorno:**
+```bash
+SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID>
+SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
+AUTH_SECRET=<AUTH_SECRET>
+GROQ_API_KEY=<GROQ_API_KEY>
+DEBUG=<true | false> # Para usar datos falsos
+```
 
-Any static assets, like images, can be placed in the `public/` directory.
+5. **Inicia el servidor de desarrollo:**
+```bash
+npm start
+# or
+yarn start
+```
 
-## 🧞 Commands
+## 📜 Uso
 
-All commands are run from the root of the project, from a terminal:
+Una vez que el servidor esté en marcha, abre tu navegador y navega a `http://localhost:4321`. Aquí podrás conectar tu cuenta de Spotify y comenzar a explorar tu resumen emocional basado en tus canciones más escuchadas.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | **Preview** your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Funcionalidades principales:
 
-## 👀 Want to learn more?
+- **Resumen de Canciones:** Obtén un resumen de tus canciones más escuchadas.
+- **Análisis de Letras:** Utiliza inteligencia artificial para analizar y resumir las letras de tus canciones.
+- **Emociones del Usuario:** Determina las emociones del usuario basadas en las canciones más escuchadas.
+- **Artistas y Géneros:** Visualiza los artistas y géneros más escuchados.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+<!-- ## 📸 Capturas -->
+
+## 📜 Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para obtener más detalles.
+
+---
+
+**¡Gracias por usar SpotiEmotions!**
