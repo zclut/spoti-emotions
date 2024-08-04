@@ -23,10 +23,11 @@ const { text } = Astro.props as Props;
     const $debug = $('#debug');
 
     if ($debug) {
-        $debug.addEventListener('change', (e) => {
+        $debug.addEventListener('change', (e: Event) => {
             const realWrapper = $('#real-wrapper');
             const debugWrapper = $('#debug-wrapper');
-            if (e.target.checked) {
+            const target = e.target as HTMLInputElement;
+            if (target.checked) {
                 isDebugMode.set(true);
                 realWrapper.classList.add('hidden');
                 debugWrapper.classList.remove('hidden');
