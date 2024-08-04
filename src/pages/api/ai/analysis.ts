@@ -16,8 +16,11 @@ const STATUS = {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const body = await request.json();
+  const { accessToken, username, debug } = body;
+
   // If we are in development mode, we will return fake data
-  if (import.meta.env.DEBUG) {
+  if (import.meta.env.DEBUG || debug) {
     let rs = FAKEDATA.map((item: any) => {
       return {
         ...item,
@@ -33,8 +36,6 @@ export const POST: APIRoute = async ({ request }) => {
     return handleResponse(result, STATUS.OK);
   }
 
-  const body = await request.json();
-  const { accessToken, username } = body;
   if (!accessToken) return handleResponse({ error: "Access token is required" }, STATUS.BAD_REQUEST);
 
   try {

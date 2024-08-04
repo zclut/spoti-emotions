@@ -25,11 +25,13 @@ const label = user ? "¡Analiza tu música!" : "Inicia sesión";
 
 <script>
   import { $ } from "@/lib/dom-selector";
-  import { storyLine, favoriteTracks, loadingStoryLine, favoriteArtists, favoriteGenres } from "@/store";
+  import { storyLine, favoriteTracks, loadingStoryLine, favoriteArtists, favoriteGenres, isDebugMode } from "@/store";
   import { signOut } from "auth-astro/client";
 
   const $analysisButton = $("#analysis-button");
   const $spinner = $("#spinner");
+  const $toggle = $("#toggle");
+
   if ($analysisButton) {
     $analysisButton.onclick = async () => {
       loadingStoryLine.set(true);
@@ -37,13 +39,17 @@ const label = user ? "¡Analiza tu música!" : "Inicia sesión";
       const { token, username } = $analysisButton.dataset;
       $spinner.classList.remove("hidden");
       $analysisButton.setAttribute("aria-disabled", "true");
+      if ($toggle)
+        $toggle.classList.add("hidden");
       try {
+        // add debug to body if we are in debug mode
+        const body = isDebugMode.get() ? { debug: true } : { accessToken: token, username: username };
         const response = await fetch("/api/ai/analysis", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ accessToken: token, username: username }),
+          body: JSON.stringify(body),
         });
         const data = await response.json();
 
@@ -51,7 +57,6 @@ const label = user ? "¡Analiza tu música!" : "Inicia sesión";
           await signOut();
           return;
         }
-
         storyLine.set(data.storyline);
         favoriteTracks.set(data.favoriteTracks);
         favoriteArtists.set(data.favoriteArtists);
