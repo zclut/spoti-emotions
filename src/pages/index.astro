@@ -5,6 +5,9 @@ import Greetings from "@/components/Greetings.astro";
 import AnalysisButton from "@/components/AnalysisButton.astro";
 import LogInButton from "@/components/LogInButton.astro";
 import Storyline from "@/components/react/Storyline";
+import Toggle from "@/components/Toggle.astro";
+
+import { FAKEUSER } from "@/lib/fake-data";
 
 import { getSession } from "auth-astro/server";
 
@@ -24,13 +27,30 @@ const session = await getSession(Astro.request);
   }
 
   <section class="flex flex-1 flex-col items-center justify-center">
-    {
-      !session ? (
-        <LogInButton />
-      ) : (
+    <div id="real-wrapper">
+      {
+        !session ? (
+          <LogInButton />
+        ) : (
           <AnalysisButton user={session.user} />
           <Storyline user={session.user} client:only="react" />
+        )
+      }
+    </div>
+    
+    {
+      !session && (
+        <div id="debug-wrapper" class="hidden">
+          <AnalysisButton user={FAKEUSER} />
+          <Storyline user={FAKEUSER} client:only="react" />
+        </div>
       )
     }
+    
+    {
+      !session && <Toggle class={'mt-2'} text="DEBUG"/>
+    }
+
+    
   </section>
 </Layout>

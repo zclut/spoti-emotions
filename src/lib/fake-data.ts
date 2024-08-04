@@ -104,3 +104,10 @@ export const FAKEFAVORITEGENRES = [
         "name": "rock"
     }
 ]
+
+export const FAKEUSER = {
+    name: 'test_user',
+    email: 'test@test.com',
+    image: null,
+    id: 'test_id'
+}
