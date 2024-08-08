@@ -1,13 +1,12 @@
 <main class="flex min-h-screen items-center justify-center text-center">
-	Redirigiendo a Spotify...
+  Redirigiendo a Spotify...
 </main>
 
 <script>
-	import { $ } from "@/lib/dom-selector"
+  import { $ } from "@/lib/dom-selector";
 
-	const { signIn } = await import("auth-astro/client")
-	signIn("spotify", { callbackUrl: "/auth/spotify/callback" })
+  const { signIn } = await import("auth-astro/client");
+  signIn("spotify", { callbackUrl: "/auth/spotify/callback" });
 
-	console.log($('#toggle'))
-	$('#toggle').classList.add('hidden')
+  $("#toggle").classList.add("hidden");
 </script>
